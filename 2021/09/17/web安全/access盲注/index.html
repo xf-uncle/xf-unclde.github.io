@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="access盲注">
+<meta property="og:type" content="article">
+<meta property="og:title" content="access盲注">
+<meta property="og:url" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/index.html">
+<meta property="og:site_name" content="xf&#39;s blog">
+<meta property="og:description" content="access盲注">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917095224221.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917095838910.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917100220275.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917100246713.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917101019524.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917103226667.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917103318297.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917104037846.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917110713658.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917110744240.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917150035498.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917150204677.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917150227384.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917151330309.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917151457866.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917153213857.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/e850352ac65c103880a07b53bc119313b17e8941.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917155750945.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917155843367.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917155917888.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917160028962.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917160253065.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917160910970.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917161512846.png">
+<meta property="og:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917161759723.png">
+<meta property="article:published_time" content="2021-09-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-17T08:49:52.197Z">
+<meta property="article:author" content="xf">
+<meta property="article:tag" content="sql注入">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917095224221.png">
+
+
+<link rel="canonical" href="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/","path":"2021/09/17/web安全/access盲注/","title":"access盲注"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>access盲注 | xf's blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?50383950ce261bfae047ef555de05e48"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">xf's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1%EF%BC%89%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">1）信息收集</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2%EF%BC%89%E5%88%87%E5%85%A5%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">2）切入点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3%EF%BC%89%E6%B3%A8%E5%85%A5"><span class="nav-number">3.</span> <span class="nav-text">3）注入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4%EF%BC%89%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="nav-number">4.</span> <span class="nav-text">4）获取数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%8E%B7%E5%8F%96%E8%A1%A8%E5%90%8D"><span class="nav-number">4.1.</span> <span class="nav-text">1.获取表名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E5%AD%97%E6%AE%B5%E5%90%8D"><span class="nav-number">4.2.</span> <span class="nav-text">2.获取字段名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%8E%B7%E5%8F%96%E5%AD%97%E6%AE%B5%E7%9A%84%E5%86%85%E5%AE%B9%E7%9A%84%E9%95%BF%E5%BA%A6"><span class="nav-number">4.3.</span> <span class="nav-text">3.获取字段的内容的长度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E8%8E%B7%E5%8F%96%E5%AD%97%E6%AE%B5%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-number">4.4.</span> <span class="nav-text">4.获取字段的内容</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5%EF%BC%89%E6%89%A9%E5%B1%95"><span class="nav-number">5.</span> <span class="nav-text">5）扩展</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="xf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">xf</p>
+  <div class="site-description" itemprop="description">xf@github.io</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="xf">
+      <meta itemprop="description" content="xf@github.io">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xf's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          access盲注
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-09-17 00:00:00 / 修改时间：16:49:52" itemprop="dateCreated datePublished" datetime="2021-09-17T00:00:00+08:00">2021-09-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/web%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">web安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>access盲注</p>
+<span id="more"></span>
+
+<h1 id="1）信息收集"><a href="#1）信息收集" class="headerlink" title="1）信息收集"></a>1）信息收集</h1><blockquote>
+<p>获取服务器信息</p>
+</blockquote>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917095224221.png" class="">
+
+<p>得到服务器的信息为：<code>asp.net+iis6.0</code>，因为iis版本较老，所以可以推断使用的是access(大概率)</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917095838910.png" class="">
+
+<p>发现有参数的站点，记录一下，进行测试。</p>
+<h1 id="2）切入点"><a href="#2）切入点" class="headerlink" title="2）切入点"></a>2）切入点</h1><blockquote>
+<p>寻找到切入点</p>
+</blockquote>
+<p>测试<code>smallclassid</code>参数，使用运算符进行测试：</p>
+<p>正常访问：</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917100220275.png" class="">
+
+<p>使用运算符之后：</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917100246713.png" class="">
+
+<p>我们使用<code>-</code>号干扰到了sql语句的正确执行，说明存在SQL注入！</p>
+<p>对每个参数都进行测试，发现都可以进行sql注入！</p>
+<h1 id="3）注入"><a href="#3）注入" class="headerlink" title="3）注入"></a>3）注入</h1><p>经过测试我们找到了切入点，我们可以使用<code>order by</code>参数进行获取列字段数。</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917101019524.png" class="">
+
+<p>测试发现，所有的参数带上<code>order by x</code>都会报错，说明：</p>
+<ul>
+<li>前端的参数在sql语句中并不是<code>where</code>语句的最后一个条件，所以导致拼接sql语句出错</li>
+<li>后端对前端的数据做了处理</li>
+</ul>
+<p>所以我们需要知道另一种注入方式：<strong>盲注</strong>，盲注的原理：数据不会回显在页面中，通过其他特殊语句达到干扰sql语句执行能力的操作就是盲注。</p>
+<blockquote>
+<p>盲注的分类</p>
+</blockquote>
+<ul>
+<li>基于布尔的盲注<ul>
+<li>在sql语句后面拼接一个布尔值，观察其结果，从而达到盲注的效果</li>
+</ul>
+</li>
+<li>基于时间的盲注<ul>
+<li>在sql语句后面拼接一个延迟函数，如果条件成立就延迟一定的时间再返还数据</li>
+</ul>
+</li>
+<li>基于报错的盲注<ul>
+<li>插入错误的语句，从而导致服务器报错，并且还要能显示报错的信息</li>
+</ul>
+</li>
+</ul>
+<p>在<code>access</code>中一般盲注只使用布尔盲注，其他盲注没有较好的实现方式。</p>
+<blockquote>
+<p>通过布尔盲注判断数据库类型</p>
+</blockquote>
+<p>因为在<code>asp+iis</code>中只使用<code>mssql</code>或者<code>access</code>，所以我们可以通过一个默认表去判断数据库类型。</p>
+<p>首先测试对应的布尔盲注</p>
+<p>条件成立时：<code>SmallClassID=2 and 1=1</code></p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917103226667.png" class="">
+
+<p>条件不成立时：<code>SmallClassID=2 and 1=2</code></p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917103318297.png" class="">
+
+<p>发现有布尔盲注！</p>
+<p>判断数据库类型：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询msysobjects数据库的总数</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> msysobjects</span><br><span class="line"><span class="comment">-- msysobjects是access附带的系统表 通过查询它的信息判断数据库类型</span></span><br><span class="line">(<span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> msysobjects) <span class="operator">&gt;</span> <span class="number">0</span></span><br><span class="line"><span class="comment">-- web端访问一般都是没有权限获取msysobjects里面的数据的，所以如果使用access那么一定报错</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917104037846.png" class="">
+
+<p>执行发现报错了，那么可以断定数据库类型为<code>access</code>！</p>
+<h1 id="4）获取数据"><a href="#4）获取数据" class="headerlink" title="4）获取数据"></a>4）获取数据</h1><h2 id="1-获取表名"><a href="#1-获取表名" class="headerlink" title="1.获取表名"></a>1.获取表名</h2><p>表名在<code>access</code>中还是只能靠猜，因为没有回显，所以需要通过布尔盲注方式进行测试。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 如果有这个表 那么数据总数一定大于等于0</span></span><br><span class="line"><span class="comment">-- 没有则报错</span></span><br><span class="line">(<span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> admin) <span class="operator">&gt;=</span><span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>猜测错误回显：</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917110713658.png" class="">
+
+<p>猜测正确回显：</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917110744240.png" class="">
+
+<p>所以获取到有<code>admin</code>这个表！</p>
+<p>可以通过<code>=</code>去具体判断这个表中有多少条数据。</p>
+<h2 id="2-获取字段名"><a href="#2-获取字段名" class="headerlink" title="2.获取字段名"></a>2.获取字段名</h2><p>与获取表名的方法类似</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">select</span> <span class="built_in">count</span>(xxx) <span class="keyword">from</span> admin) <span class="operator">&gt;=</span><span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>小技巧：</p>
+<p>查询后台登录页面的源代码，找到form表单，输入框<code>name</code>的值有很大概率是表里面的字段名。</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917150035498.png" class="">
+
+<p>测试，获取字段名：</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917150204677.png" class="">
+
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917150227384.png" class="">
+
+<p>成功获取到了用户名字段：<code>adminuid</code>，密码字段：<code>adminpwd</code></p>
+<h2 id="3-获取字段的内容的长度"><a href="#3-获取字段的内容的长度" class="headerlink" title="3.获取字段的内容的长度"></a>3.获取字段的内容的长度</h2><p>获取内容长度使用函数：<code>len()</code>，你需要告诉它列名，然后它就会计算该列每一行数据的长度。</p>
+<p>还需要了解一个<code>access</code>表达式：<code>top x</code>，它的作用是：获取查询结果的前<code>x</code>条记录。用它与<code>len</code>函数一起使用，因为我们需要让返回的结果只有一条数据，这样才容易进行判断，从而实现布尔注入。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- pyload:</span></span><br><span class="line"><span class="keyword">and</span> (<span class="keyword">select</span> top <span class="number">1</span> len(adminuid) <span class="keyword">from</span> admin) <span class="operator">=</span> x</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917151330309.png" class="">
+
+<p>成功回显，所以用户名长度为<code>5</code></p>
+<p>同理可得密码的长度为<code>16</code></p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917151457866.png" class="">
+
+<h2 id="4-获取字段的内容"><a href="#4-获取字段的内容" class="headerlink" title="4.获取字段的内容"></a>4.获取字段的内容</h2><p>因为我们使用的盲注，没有回显值，但是我们不可能整个去比较，这样字典太大了，不实际。所以需要使用到字符串截取函数:</p>
+<p><code>mid(str,position,len)</code></p>
+<ul>
+<li>第一个参数：需要截取的字符串</li>
+<li>第二个参数：从第几个位置开始截取（从1开始）</li>
+<li>第三个参数：截取的长度</li>
+</ul>
+<p>一般使用数字对比人性化，所以还需要使用到另一个函数：</p>
+<p><code>asc(str)</code></p>
+<ul>
+<li>将对应的字符转换为对应的<code>ascii</code>码值</li>
+<li>如果输入的是字符串，那么就转换第一位</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- payload</span></span><br><span class="line"><span class="keyword">and</span> (<span class="keyword">select</span> top <span class="number">1</span> <span class="keyword">asc</span>(mid(adminuid,<span class="number">1</span>,<span class="number">1</span>)) <span class="keyword">from</span> admin)<span class="operator">=</span><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>然后我们就可以通过修改最后的数值去判断前端显示得知每一位的数据了。</p>
+<p>获取到第一位的值：<code>97</code></p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917153213857.png" class="">
+
+<p>查询<code>ascii</code>表得知，第一位为<code>a</code></p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/e850352ac65c103880a07b53bc119313b17e8941.png" class="">
+
+<p>其他数据获取同理</p>
+<h1 id="5）扩展"><a href="#5）扩展" class="headerlink" title="5）扩展"></a>5）扩展</h1><p>使用<code>burpsuite</code>进行爆破获取字段的内容</p>
+<p>抓包，使用快捷键<code>ctrl+i</code>发送给爆破模块。</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917155750945.png" class="">
+
+<p>设置攻击方式为 集束炸弹 模式</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917155843367.png" class="">
+
+<p>然后配置变量，第一个变量为<code>mid</code>函数的参数，第二个变量为对应的值</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917155917888.png" class="">
+
+<p>到达<code>payload</code>设置，第一个参数类型为数值型，范围为<code>1-5(对应的数据长度)</code>，步长为<code>1</code>，即每次增加1</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917160028962.png" class="">
+
+<p>第二个参数类型为数值型，范围是<code>64-122</code>(可以去看<code>ascii</code>表)，步长为1</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917160253065.png" class="">
+
+<p>到达<code>payload</code>选项，选择开始攻击。</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917160910970.png" class="">
+
+<p>因为查询成功的时候，数据会显示很多，所以我们可以通过判断返回的结果长度得到是否正确。</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917161512846.png" class="">
+
+<p>所以最后的结果就是<code>97 100 109 105 110</code>，查询<code>ascii</code>表得到结果为<code>admin</code></p>
+<p>获取密码也可以使用相同手段。最后成功进入后台！</p>
+<img src="/2021/09/17/web%E5%AE%89%E5%85%A8/access%E7%9B%B2%E6%B3%A8/image-20210917161759723.png" class="">
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag"># sql注入</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/16/web%E5%AE%89%E5%85%A8/access%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2/" rel="prev" title="access联合查询">
+                  <i class="fa fa-chevron-left"></i> access联合查询
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xf</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
